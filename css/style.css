@@ -1,0 +1,146 @@
+#parameter{
+	width: 80px;
+	margin: 10px;
+	opacity: 0.7;
+	padding: 10px;
+	right: 0px;
+	position: fixed;
+	bottom: 100px;
+	background: lightgreen;
+
+}
+
+/*NAV BAR*/
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    height: 82px;
+    border-bottom: #00fa9a solid 3px;
+}
+
+li {
+    float: right;
+    font-size: 20px;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 2px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #000080;
+}
+
+li a.logo:hover:not(.active) 
+{
+	background-color: #00fa9a;
+}
+
+.navbarright {
+    padding: 34px 20px 34px 20px;
+    color: white;
+    font-size: 23px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+.logo {
+    float: left;
+    border-right: 70px solid #333;
+    background-color: white;
+}
+
+#logoimg {
+    height: 80px;
+    padding: 2px 0 4px 0;
+    margin: 0;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url(../picture/Background.jpg);
+    background-size: cover;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.desc {
+    border-right: 1px solid white;
+    height: 450px;
+    margin-bottom: 10px;
+}
+
+.indexImages
+{
+    height: 534px;
+}
+
+section{
+    margin: 3px;
+}
+
+
+/*Slide Show*/
+
+* {box-sizing: border-box;}
+.mySlides {display: none;}
+img{
+    vertical-align: middle;
+    
+}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 800px;
+  position: relative;
+  margin: auto;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .text {font-size: 11px}
+}

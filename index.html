@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" rel="stylesheet" href="./css/style.css">
+  <link rel="SHORTCUT ICON" href="picture/icon.png">
+</head>
+
+<body>
+
+  <!-- NAV BAR -->
+  <ul>
+    <li><a class="navbarright" href="WalkingInterface.html">Walking Interface</a></li>
+    <li><a class="navbarright" href="ImageProcessInterface.html">Humanoid Interface</a></li>
+    <li><a class="navbarright" href="MotionControlInterface.html">Motion Controller</a></li>
+    <li><a style="text-decoration: underline;" class="navbarright" href="index.html">Home</a></li>
+    <li class="logo">
+      <a href="index.html" class="logo"><img id="logoimg" src="./resources/TKU_ICLab/iclablogo-02.png"></a>
+    </li>
+  </ul>
+  <br />
+
+  <div>
+    <!-- Slide Show -->
+    <div class="slideshow-container">
+
+      <div class="mySlides fade">
+        <img class="indexImages" src="./resources/TKU_ICLab/0811_180812_0001.jpg" style="width:100%">
+      </div>
+
+      <div class="mySlides fade">
+        <img class="indexImages" src="./resources/TKU_ICLab/photo2.JPG" style="width:100%">
+      </div>
+
+      <div class="mySlides fade">
+        <img class="indexImages" src="./resources/TKU_ICLab/photo3.JPG" style="width:100%">
+      </div>
+
+      <div class="mySlides fade">
+        <img class="indexImages" src="./resources/TKU_ICLab/photo4.JPG" style="width:100%">
+      </div>
+
+      <div class="mySlides fade">
+        <img class="indexImages" src="./resources/TKU_ICLab/photo5.JPG" style="width:100%">
+      </div>
+
+      <div class="mySlides fade">
+        <img class="indexImages" src="./resources/TKU_ICLab/photo6.JPG" style="width:100%">
+      </div>
+
+      <div class="mySlides fade">
+        <img class="indexImages" src="./resources/TKU_ICLab/photo7.JPG" style="width:100%">
+      </div>
+
+    </div>
+    <br>
+
+    <div style="text-align:center">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+  <br />
+  <hr style="margin:0px; padding: 0.5px; border-top:1px white solid;" />
+  <section class="desc" style="float: left; width: 50%; padding: 5px; margin-top: 20px;">
+    <h2 style="color: white; text-align: center; font-size: 27px; text-decoration: underline; margin-top: 0px;">About IC Lab</h2>
+    <p style="font-size: 21px; color: white; margin: 0 4%;">
+      無布從……當一養味市動不黃上實內進這乎生一國時印……發容。
+
+      足有有史我由計毒進力性的器東洋是者。
+
+      男時化員工容必作較題。
+
+      上會當金球應中放很我學容點我我故的何企道轉眼富眾程生次銷的……斷國造、官配病球許笑際代來，義沒年成者相得？麼散心年身。林灣發念馬。要需和減演性：量種不風：本酒人？假作竟國多子我說開一。
+
+      就價你快電力我使再學為電把臉究養，化然度全解表報。
+
+      前取須快育差始是個從失們這國東要上功：然文清長時畫生人們生對我非走，他一家的死族的內面洋果但別仍中在。術口士視體術候義頭落加接一門容況龍；科善又看隨展！勢嗎過立中態麗，錯開賽是角上；安行生媽把東續合原示溫界大木真沒府義後到足，資安代長商式然我主一今快是，山是故當心兩來，這不不前。相的覺器媽為道而早出依創著大德回分體選未，金痛後不驚理人！字方經是本家下才義負。
+      就價你快電力我使再學為電把臉究養，化然度全解表報。
+    </p>
+  </section>
+  </div>
+  <section align="center" style="padding: 5px; margin-top: 20px;">
+    <h2 style="color: white; text-align: center; font-size: 27px; text-decoration: underline; margin-top: 0px;">Video
+      Introduction</h2>
+    <iframe width="650pX" height="350px" src="https://www.youtube.com/embed/U52KjAVZMio" frameborder="0" allow="autoplay;encrypted-media"></iframe>
+  </section>
+
+
+  <script>
+    var slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      var dots = document.getElementsByClassName("dot");
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) { slideIndex = 1 }
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
+      setTimeout(showSlides, 3000);
+    }
+  </script>
+
+</body>
+
+</html>
