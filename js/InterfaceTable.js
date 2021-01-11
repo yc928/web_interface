@@ -159,7 +159,7 @@ function NewRelativeSpeed()
       var input=document.createElement('input');
       input.type='text';
       input.className='textbox';
-      input.value=0;
+      input.value=10;
       div2.appendChild(input);
     }  
 
@@ -169,7 +169,7 @@ function NewRelativeSpeed()
       var input=document.createElement('input');
       input.type='text';
       input.className='textbox';
-      input.value=0;
+      input.value=10;
       div2.appendChild(input);
     }
 
@@ -289,7 +289,7 @@ function NewAbsoluteSpeed()
       var input=document.createElement('input');
       input.type='text';
       input.className='textbox';
-      input.value=0;
+      input.value=1;
       div2.appendChild(input);
     }  
     //even number columns
@@ -298,7 +298,7 @@ function NewAbsoluteSpeed()
       var input=document.createElement('input');
       input.type='text';
       input.className='textbox';
-      input.value=0;
+      input.value=1;
       div2.appendChild(input);
     }
 
