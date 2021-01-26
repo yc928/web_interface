@@ -14,17 +14,24 @@
 	<script type="text/javascript" type="text/javascript">
 
 		var ros = new ROSLIB.Ros({
-			url: 'ws://172.17.121.10:9090'
+			url: "ws://172.17.121.10:9090"
 		});
 		ros.on('connection', function () {
 			console.log('Connection made!');
 			document.getElementById('connected').style.display = 'inline';
+			document.getElementById("orign_image").style.display = 'inline';
+			document.getElementById("color_image").style.display = 'inline';
 		});
 		ros.on('error', function (error) {
 			console.log('Error connecting to websocket server: ', error);
+			enterAddress();
 		});
 		ros.on('close', function () {
 			console.log('Connection to websocket server closed.');
+			B_Measure_Flag = true;
+			document.getElementById("color_image").style.display = 'none';
+			document.getElementById("orign_image").style.display = 'none';
+			document.getElementById('connected').style.display = 'none';
 		});
 
 		var ColorModelForm_Topic = new ROSLIB.Topic({
@@ -131,6 +138,9 @@
 		});
 
 		//-----
+		var firstConnectFlag = true;
+		var myaddress = "172.17.121.10";
+
 		var B_ColorModelForm_Flag = true;
 		var B_SetupCamera_Flag = true;
 		var B_Start_Flag = true;
@@ -148,6 +158,20 @@
 		var CamWhiteBalanceValue = 0;
 		var CamAuto_WhiteBalanceValue = false;
 		var CamAuto_ExposureValue = false;
+
+		function enterAddress() {
+			if(!firstConnectFlag)
+			{
+				ros.close();
+			} else {
+				firstConnectFlag = false;
+			}
+			myaddress = document.getElementById("addressSelect").value;
+			console.log("Connecting address is", myaddress)
+			ros.connect("ws://" + myaddress + ":9090");
+			document.getElementById("orign_image").src = "http://" + myaddress + ":8080/stream?topic=/orign_image";
+			document.getElementById("color_image").src = "http://" + myaddress + ":8080/stream?topic=/colormodel_image";
+		}
 
 		function ResetColorModelFunction() {
 			document.getElementById("HminRange").value = 0;
@@ -775,14 +799,13 @@
 			<table>
 				<tr>
 					<td>
-						<select style="height:25px; margin-right: 5px;" id="Camera_Select">
-							<option value="0">dev0</option>
-							<option value="1">dev1</option>
-							<option value="2">dev2</option>
+						<select style="height:25px; margin-right: 5px;" id="addressSelect">
+							<option value="172.17.121.10">172.17.121.10</option>
+							<option value="localhost">localhost</option>
 						</select>
 					</td>
 					<td>
-						<button type="button" style="width:140px ;height:25px;" id="changeCameraButton" onclick="changeCamera()">Change	Camera</button>
+						<button type="button" style="width:110px ;height:25px;" id="changeAddressButton" onclick="enterAddress()">Enter Address</button>
 					</td>
 				</tr>
 			</table>
@@ -886,10 +909,12 @@
 								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_Start" value="Start" onClick="WebStart()"></input>
 							</td>
 							<td>
-								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_ColorModelForm" value="Show Model Form" onClick="ColorModelForm()"></input>
+								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_ColorModelForm" value="Show Model Form"
+								 onClick="ColorModelForm()"></input>
 							</td>
 							<td>
-								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_Camera" value="Camera Setup" onClick="CameraSetUp()"></input>
+								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_Camera" value="Camera Setup"
+								 onClick="CameraSetUp()"></input>
 							</td>
 						</tr>
 					</table>
@@ -903,11 +928,13 @@
 						</tr>
 						<tr>
 							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="HorizontalPositionValue" size="12" value="2048" onchange="rangeHorizontalPosition(this.value)" /></td>
-							<td><input class="Range" id="HorizontalPositionRange" name="HorizontalPositionRange" type="range" min="0" max="4095" value="2048" oninput="showHorizontalPosition(this.value)"/></td>
+							<td><input class="Range" id="HorizontalPositionRange" name="HorizontalPositionRange" type="range" min="0" max="4095"
+								 value="2048" oninput="showHorizontalPosition(this.value)"/></td>
 							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="HorizontalSpeedValue" size="12" value="1" onchange="rangeHorizontalSpeed(this.value)" /></td>
 						</tr>
 						<tr>
-							<td><input class="Range" id="HorizontalSpeedRange" name="HorizontalSpeedRange" type="range" min="1" max="1023" value="1" oninput="showHorizontalSpeed(this.value)"/></td>
+							<td><input class="Range" id="HorizontalSpeedRange" name="HorizontalSpeedRange" type="range" min="1" max="1023"
+								 value="1" oninput="showHorizontalSpeed(this.value)"/></td>
 						</tr>
 						<tr>
 							<td colspan="3">
@@ -916,11 +943,13 @@
 						</tr>
 						<tr>
 							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="VerticalPositionValue" size="12" value="2048" onchange="rangeVerticalPosition(this.value)" /></td>
-							<td><input class="Range" id="VerticalPositionRange" name="VerticalPositionRange" type="range" min="0" max="4095" value="2048" oninput="showVerticalPosition(this.value)" /></td>
+							<td><input class="Range" id="VerticalPositionRange" name="VerticalPositionRange" type="range" min="0" max="4095"
+								 value="2048" oninput="showVerticalPosition(this.value)" /></td>
 							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="VerticalSpeedValue" size="12" value="1" onchange="rangeVerticalSpeed(this.value)" /></td>
 						</tr>
 						<tr>
-							<td><input class="Range" id="VerticalSpeedRange" name="VerticalSpeedRange" type="range" min="1" max="1023" value="1" oninput="showVerticalSpeed(this.value)" /></td>
+							<td><input class="Range" id="VerticalSpeedRange" name="VerticalSpeedRange" type="range" min="1" max="1023" value="1"
+								 oninput="showVerticalSpeed(this.value)" /></td>
 						</tr>
 					</table>
 				</div>
@@ -939,7 +968,8 @@
 						</tr>
 						<tr>
 							<td width="25"></td>
-							<td><input class="Range" id="CamBrightness" name="CamBrightness" type="range" min="0" max="255" value="50" oninput="showCamBrightness(this.value)" /></td>
+							<td><input class="Range" id="CamBrightness" name="CamBrightness" type="range" min="0" max="255" value="50"
+								 oninput="showCamBrightness(this.value)" /></td>
 							<td><input type="text" class="ValueText" id="CamBrightnessValue" size="12" value="50" onchange="rangeCamBrightnessValue(this.value)" /></td>
 						</tr>
 						<tr>
@@ -959,7 +989,8 @@
 						</tr>
 						<tr>
 							<td width="25"></td>
-							<td><input class="Range" id="CamSaturation" name="CamSaturation" type="range" min="0" max="255" value="50" oninput="showCamSaturation(this.value)" /></td>
+							<td><input class="Range" id="CamSaturation" name="CamSaturation" type="range" min="0" max="255" value="50"
+								 oninput="showCamSaturation(this.value)" /></td>
 							<td><input type="text" class="ValueText" id="CamSaturationValue" size="12" value="50" onchange="rangeCamSaturationValue(this.value)" /></td>
 						</tr>
 						<tr>
@@ -969,7 +1000,8 @@
 						</tr>
 						<tr>
 							<td width="25"></td>
-							<td><input class="Range" id="CamWhiteBalance" name="CamWhiteBalance" type="range" min="0" max="8000" value="4000" oninput="showCamWhiteBalance(this.value)" /></td>
+							<td><input class="Range" id="CamWhiteBalance" name="CamWhiteBalance" type="range" min="0" max="8000" value="4000"
+								 oninput="showCamWhiteBalance(this.value)" /></td>
 							<td><input type="text" class="ValueText" id="CamWhiteBalanceValue" size="12" value="4000" onchange="rangeCamWhiteBalanceValue(this.value)" /></td>
 						</tr>
 					</table>
