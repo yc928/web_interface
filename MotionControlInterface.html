@@ -30,10 +30,9 @@
     <!-- NAV BAR -->
     <ul>
         <li><a target="_blank" class="navbarright" href="WalkingInterface.html">Walking Interface</a></li>
+        <li><a target="_blank" class="navbarright" href="ImageProcessInterface.html">Humanoid Interface</a></li>
         <li><a target="_blank" style="text-decoration: underline;" class="navbarright"
-                href="ImageProcessInterface.html">Humanoid
-                Interface</a></li>
-        <li><a target="_blank" class="navbarright" href="MotionControlInterface.html">Motion Controller</a></li>
+                href="MotionControlInterface.html">Motion Controller</a></li>
         <li><a target="_blank" class="navbarright" href="index.html">Home</a></li>
         <li class="logo">
             <a target="_blank" href="index.html" class="logo"><img id="logoimg"
@@ -50,28 +49,28 @@
         <div id="container">
 			<div style="margin-left: 180px;"> 
 				<input type="text" id="filename" name="filename" value="NewFile.ini" style="width: 179px;">
-				<input type="button" id="SaveButton" value="Save" onclick="Save();" style="width:80px;">
-				<input type="button" id="ReadButton" value="Read" onclick="Read();" style="width:80px;">
-				<input type="button" id="SaveStandButton" value="SaveStand" onclick="SaveStand();" style="width:80px;">
-				<input type="button" id="ReadStandButton" value="ReadStand" onclick="ReadStand();" style="width:80px;">
+				<input type="button" id="SaveButton" value="Save" onclick="Save();" style="width:80px;" disabled="disabled">
+				<input type="button" id="ReadButton" value="Read" onclick="Read();" style="width:80px;" disabled="disabled">
+				<input type="button" id="SaveStandButton" value="SaveStand" onclick="SaveStand();" style="width:80px;" disabled="disabled">
+				<input type="button" id="ReadStandButton" value="ReadStand" onclick="ReadStand();" style="width:80px;" disabled="disabled">
 			</div>
 
             <div style="width: 800px; margin-top: 16px; margin-bottom: 16px; margin-left: 180px;">
                 ID: <input type="text" id="SendID" value=-1 style="width:50px;">
                 Sector: <input type="text" id="Sector" value=-1 style="width:50px;">
-                <input type="button" id="SendButton" value="Send" onclick="Send();" style="width:80px;">
+                <input type="button" id="SendButton" value="Send" onclick="Send();" style="width:80px;" disabled="disabled">
                 <input type="checkbox" id="Locked29" value="Locked" onclick="Locked();" checked>Locked 29
-                <input type="button" id="executeButton" value="execute" onclick="execute();" style="width:80px; margin-left:50px;">
-                <input type="button" id="standButton" value="stand" onclick="stand();" style="width:80px; ">
-                <input type="button" id="resetButton" value="reset" onclick="resetfunction();" style="width:80px;">
+                <input type="button" id="executeButton" value="execute" onclick="execute();" style="width:80px; margin-left:50px;" disabled="disabled">
+                <input type="button" id="standButton" value="stand" onclick="stand();" style="width:80px;" disabled="disabled">
+                <input type="button" id="resetButton" value="reset" onclick="resetfunction();" style="width:80px;" disabled="disabled">
             </div>
 
 			<div style="margin-left: 180px;">
                 ID:&nbsp;<input type="text" id="chose_multiple" value= "-1" style="width:50px">
                 multipy&nbsp;<input type="text" id="times" value= "-1" style="width:50px">
-				times&nbsp;<input type="button" id="MultipleButton" value="Multiple" onclick="Multiple();" style="width:80px; margin-right:23px;">
+				times&nbsp;<input type="button" id="MultipleButton" value="Multiple" onclick="Multiple();" style="width:80px; margin-right:23px;" disabled="disabled">
                 ID1:&nbsp;<input type="text" id="Merge1" value="-1" style="width:50px;">&nbsp;merge&nbsp;to&nbsp;ID2:&nbsp;<input type="text" id="Merge2" value="-1" style="width:50px;">
-				<input type="button" id="MergeButton" value="Merge" onclick="Merge();" style="width:80px;">
+				<input type="button" id="MergeButton" value="Merge" onclick="Merge();" style="width:80px;" disabled="disabled">
             </div>
 
 			<div id="label" style="width: 900px; margin-left:180px; margin-top:10px;"></div>
@@ -80,11 +79,11 @@
             <div style="float: left; width: 1010px;">
                 
 				<div id="leftbox" style="margin-left: 30px; margin-top:50px;">
-                    <input type="button" id="AddButton" value="Add" onclick="Add();" style="width: 65px;">
-                    <input type="button" id="DeleteButton" value="Delete" onclick="Delete();" style="width:65px"></input> : <input type="text" id="chose_delete" value="-1" style="width:50px;">
-                    <input type="button" id="ReverseButton" value="Reverse" onclick="Reverse();" style="width:65px"> : <input type="text" id="chose_reverse" value="-1" style="width:50px;">
-                    <input type="button" id="CopyButton" value="Copy" onclick="Copy();" style="width:65px"> : <input type="text" id="chose_copy" value="-1" style="width:50px;">
-                	<input type="button" id="CheckSumButton" value="CheckSum" onclick="CheckSum();" style=" margin-top:20px;"><br>
+                    <input type="button" id="AddButton" value="Add" onclick="Add();" style="width: 65px;" disabled="disabled">
+                    <input type="button" id="DeleteButton" value="Delete" onclick="Delete();" style="width:65px" disabled="disabled"></input> : <input type="text" id="chose_delete" value="-1" style="width:50px;">
+                    <input type="button" id="ReverseButton" value="Reverse" onclick="Reverse();" style="width:65px" disabled="disabled"> : <input type="text" id="chose_reverse" value="-1" style="width:50px;">
+                    <input type="button" id="CopyButton" value="Copy" onclick="Copy();" style="width:65px" disabled="disabled"> : <input type="text" id="chose_copy" value="-1" style="width:50px;">
+                	<input type="button" id="CheckSumButton" value="CheckSum" onclick="CheckSum();" style=" margin-top:20px;" disabled="disabled"><br>
 					ID: <input type="text" id="CheckSumID" value=-1 style="width:50px; margin-top:5px;">
 					<div id="CheckSumBox" style="height: 240px; margin-top:30px;">
                         <div class="checksumsmallbox">M1:</div>
@@ -293,9 +292,24 @@
                 </div>
             </div>
         </div>
-        <div id="abc">
+        <div id="rightarea">
+            <div id="head">
+                <table>
+                    <tr>
+                        <td>
+                            <select style="height:25px; margin-right: 5px;" id="addressSelect">
+                                <option value="172.17.121.10">172.17.121.10</option>
+                                <option value="localhost">localhost</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" style="width:110px ;height:25px;" id="changeAddressButton" onclick="enterAddress()">Enter Address</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <div id="version">
-                ver 2020.11.16
+                ver 2021.01.26
             </div>
             <div id="robotpic">
                 <img src="./picture/Robot11.png" style="margin-left: 60px;width: 100%;height: 100%; border: solid black 2px;">
