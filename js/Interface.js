@@ -89,6 +89,9 @@ var ExecuteCallBack;
 var firstConnectFlag = true;
 var myaddress = "172.17.121.10";
 
+var executeSubscribeFlag = false;
+var standSubscribeFlag = false;
+
 var doSendFlag = false;
 var doExecuteFlag = false;
 var doStandFlag = false;
@@ -125,26 +128,45 @@ function createTopics()
   {
     if(msg.data == true)
     {
-      document.getElementById('label').innerHTML = "Execute is finish !!";
-      document.getElementById('stand_label').innerHTML = "not standing";
-      document.getElementById('SaveButton').disabled = false;
-      document.getElementById('ReadButton').disabled = false;
-      document.getElementById('SaveStandButton').disabled = false;
-      document.getElementById('ReadStandButton').disabled = false;
-      document.getElementById('SendButton').disabled = false;
-      document.getElementById('executeButton').disabled = false;
-      document.getElementById('standButton').disabled = false;
-      document.getElementById('MultipleButton').disabled = false;
-      document.getElementById('MergeButton').disabled = false;
-      document.getElementById('AddButton').disabled = false;
-      document.getElementById('DeleteButton').disabled = false;
-      document.getElementById('ReverseButton').disabled = false;
-      document.getElementById('CopyButton').disabled = false;
-      document.getElementById('CheckSumButton').disabled = false;
+      if(executeSubscribeFlag == true)
+      {
+        document.getElementById('label').innerHTML = "Execute is finish !!";
+        document.getElementById('stand_label').innerHTML = "not standing";
+        document.getElementById('SaveButton').disabled = false;
+        document.getElementById('ReadButton').disabled = false;
+        document.getElementById('SaveStandButton').disabled = false;
+        document.getElementById('ReadStandButton').disabled = false;
+        document.getElementById('SendButton').disabled = false;
+        document.getElementById('executeButton').disabled = false;
+        document.getElementById('standButton').disabled = false;
+        document.getElementById('MultipleButton').disabled = false;
+        document.getElementById('MergeButton').disabled = false;
+        document.getElementById('AddButton').disabled = false;
+        document.getElementById('DeleteButton').disabled = false;
+        document.getElementById('ReverseButton').disabled = false;
+        document.getElementById('CopyButton').disabled = false;
+        document.getElementById('CheckSumButton').disabled = false;
+        executeSubscribeFlag = false;
+      }
+      else if(standSubscribeFlag == true)
+      {
+        document.getElementById('stand_label').innerHTML = "is standing";
+        document.getElementById('standButton').disabled = false;
+        standSubscribeFlag = false;
+      }
     }
     else
     {
-      document.getElementById('label').innerHTML = "Execute is fail !! Please try again !!";
+      if(executeSubscribeFlag == true)
+      {
+        document.getElementById('label').innerHTML = "Execute is fail !! Please try again !!";
+        executeSubscribeFlag = false;
+      }
+      else if(standSubscribeFlag == true)
+      {
+        document.getElementById('label').innerHTML = "Stand is fail !! Please try again !!";
+        standSubscribeFlag = false;
+      }
     }
   });
 }
@@ -184,6 +206,8 @@ function CheckSector(sectordata)
   });
   LoadParameterClient.callService(parameter_request , function(srv){
     console.log("CheckSector")
+    executeSubscribeFlag = false;
+    standSubscribeFlag = false;
     if(srv.checkflag == true)
     {
       if(doSendFlag == true)
@@ -210,15 +234,15 @@ function CheckSector(sectordata)
         SectorPackage.publish(SendSectorPackage);
 
         doExecuteFlag = false;
+        executeSubscribeFlag = true;
       }
       else if(doStandFlag == true)
       {
         SendSectorPackage.data = sectordata;
         SectorPackage.publish(SendSectorPackage);
         
-        document.getElementById('stand_label').innerHTML = "is standing";
-        document.getElementById('standButton').disabled = false;
         doStandFlag = false;
+        standSubscribeFlag = true;
       }
     }
     else
