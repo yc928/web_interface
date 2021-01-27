@@ -91,28 +91,35 @@
 }
 
 
-
-#robotpic
+#rightarea
 {
     float: left;
     width: 300px;
     margin-left: 0px;
     margin-top: 10px;
 }
+#head
+{
+    float: left;
+    width: auto;
+    margin-left: 60px;
+    margin-top: 0px;
+    text-align:right;
+}
 #version
 {
     float: left;
     width: auto;
-    margin-left: 80px;
-    margin-top: 0px;
+    margin-left: 60px;
+    margin-top: 40px;
     text-align:right;
 }
-#abc
+#robotpic
 {
     float: left;
     width: 300px;
     margin-left: 0px;
-    margin-top: 50px;
+    margin-top: 10px;
 }
 .blue
 {
