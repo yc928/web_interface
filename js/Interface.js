@@ -3,6 +3,7 @@ var ros = new ROSLIB.Ros({
 });
 ros.on('connection', function () {
   console.log('Connection made!');
+  connectFlag = true;
   createTopics();
   resetfunction();
   document.getElementById('resetButton').disabled = false;
@@ -26,7 +27,6 @@ ros.on('error', function (error) {
   document.getElementById('CheckSumButton').disabled = true;
   document.getElementById('resetButton').disabled = true;
   document.getElementById('connected').style.display = 'none';
-  enterAddress();
 });
 ros.on('close', function () {
   console.log('Connection to websocket server closed.');
@@ -83,11 +83,11 @@ var SaveMotionData = new ROSLIB.Message({
 });
 
 //-----
-var SendPackageCallBack;
-var ExecuteCallBack;
+var SendPackageCallBack = null;
+var ExecuteCallBack = null;
 
-var firstConnectFlag = true;
-var myaddress = "172.17.121.10";
+var connectFlag = false;
+var myAddress = "172.17.121.10";
 
 var executeSubscribeFlag = false;
 var standSubscribeFlag = false;
@@ -100,6 +100,10 @@ var FirstSend = true;
 
 function createTopics()
 {
+  if(SendPackageCallBack != null)
+  {
+    SendPackageCallBack.unsubscribe();
+  }
   SendPackageCallBack = new ROSLIB.Topic({
     ros: ros,
     name: '/package/motioncallback',
@@ -119,6 +123,10 @@ function createTopics()
     }
   });
 
+  if(ExecuteCallBack != null)
+  {
+    ExecuteCallBack.unsubscribe();
+  }
   ExecuteCallBack = new ROSLIB.Topic({
     ros: ros,
     name: '/package/executecallback',
@@ -173,17 +181,14 @@ function createTopics()
 
 function enterAddress() 
 {
-  if(!firstConnectFlag)
+  if(connectFlag)
   {
     ros.close();
+    connectFlag = false;
   }
-  else
-  {
-    firstConnectFlag = false;
-  }
-  myaddress = document.getElementById("addressSelect").value;
-  console.log("Connecting address is", myaddress);
-  ros.connect("ws://" + myaddress + ":9090");
+  myAddress = document.getElementById("addressSelect").value;
+  console.log("Connecting address is", myAddress);
+  ros.connect("ws://" + myAddress + ":9090");
 }
 
 function sleep(ms)
@@ -204,7 +209,8 @@ function CheckSector(sectordata)
   var parameter_request = new ROSLIB.ServiceRequest({
     data : sectordata
   });
-  LoadParameterClient.callService(parameter_request , function(srv){
+  LoadParameterClient.callService(parameter_request , function(srv)
+  {
     console.log("CheckSector")
     executeSubscribeFlag = false;
     standSubscribeFlag = false;
@@ -350,7 +356,8 @@ function Read()
     name : document.getElementById('filename').value,
     readstate : 0
   });
-  LoadParameterClient.callService(parameter_request , function(MotionData){
+  LoadParameterClient.callService(parameter_request , function(MotionData)
+  {
     var motionlistcnt = 0;
     var relativepositioncnt = 0;
     var relativespeedcnt = 0;

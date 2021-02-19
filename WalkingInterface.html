@@ -62,13 +62,13 @@
 		});
 		ros.on('connection', function () {
 			console.log('Connection made!');
+			connectFlag = true;
 			createTopics();
 			document.getElementById('connected').style.display = 'inline';
 		});
 		ros.on('error', function (error) {
 			console.log('Error connecting to websocket server: ', error);
 			document.getElementById('connected').style.display = 'none';
-			enterAddress();
 		});
 		ros.on('close', function () {
 			console.log('Connection to websocket server closed.');
@@ -180,12 +180,11 @@
 		});
 
 		//-----
-		var SensorPackage_Subscriber;
-		var Wave_Topic;
-		var wave_msg;
+		var SensorPackage_Subscriber = null;
+		var Wave_Topic = null;
 
-		var firstConnectFlag = true;
-		var myaddress = "172.17.121.10";
+		var connectFlag = false;
+		var myAddress = "172.17.121.10";
 		
 		var Thetavaluetmp = 0;
 		var Xvaluetmp = 0;
@@ -245,6 +244,10 @@
 		/* Kick Ball Variables End */
 
 		function createTopics() {
+			if(SensorPackage_Subscriber != null)
+			{
+				SensorPackage_Subscriber.unsubscribe();
+			}
 			var SensorPackage_Subscriber = new ROSLIB.Topic({
 			ros: ros,
 			name: '/package/sensorpackage',
@@ -265,13 +268,14 @@
 				document.getElementById("Right_4").value = msg.ForceSensorData[7];*/
 			});
 
+			if(Wave_Topic != null)
+			{
+				Wave_Topic.unsubscribe();
+			}
 			Wave_Topic = new ROSLIB.Topic({
 				ros: ros,
 				name: '/wave',
 				messageType: 'tku_msgs/wavelist'
-			});
-			wave_msg = new ROSLIB.Message({
-				wavelist: [0]
 			});
 			Wave_Topic.subscribe(function (msg) 
 			{
@@ -300,15 +304,14 @@
 		}
 
 		function enterAddress() {
-			if(!firstConnectFlag)
+			if(connectFlag)
 			{
 				ros.close();
-			} else {
-				firstConnectFlag = false;
+				connectFlag = false;
 			}
-			myaddress = document.getElementById("addressSelect").value;
-			console.log("Connecting address is", myaddress)
-			ros.connect("ws://" + myaddress + ":9090");
+			myAddress = document.getElementById("addressSelect").value;
+			console.log("Connecting address is", myAddress)
+			ros.connect("ws://" + myAddress + ":9090");
 		}
 
 		function LeftTurnFun() {

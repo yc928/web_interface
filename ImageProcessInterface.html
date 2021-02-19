@@ -18,6 +18,7 @@
 		});
 		ros.on('connection', function () {
 			console.log('Connection made!');
+			connectFlag = true;
 			document.getElementById('connected').style.display = 'inline';
 			document.getElementById("orign_image").style.display = 'inline';
 			document.getElementById("color_image").style.display = 'inline';
@@ -25,7 +26,6 @@
 		ros.on('error', function (error) {
 			console.log('Error connecting to websocket server: ', error);
 			document.getElementById('connected').style.display = 'none';
-			enterAddress();
 		});
 		ros.on('close', function () {
 			console.log('Connection to websocket server closed.');
@@ -139,8 +139,8 @@
 		});
 
 		//-----
-		var firstConnectFlag = true;
-		var myaddress = "172.17.121.10";
+		var connectFlag = false;
+		var myAddress = "172.17.121.10";
 
 		var B_ColorModelForm_Flag = true;
 		var B_SetupCamera_Flag = true;
@@ -161,17 +161,16 @@
 		var CamAuto_ExposureValue = false;
 
 		function enterAddress() {
-			if(!firstConnectFlag)
+			if(connectFlag)
 			{
 				ros.close();
-			} else {
-				firstConnectFlag = false;
+				connectFlag = false;
 			}
-			myaddress = document.getElementById("addressSelect").value;
-			console.log("Connecting address is", myaddress)
-			ros.connect("ws://" + myaddress + ":9090");
-			document.getElementById("orign_image").src = "http://" + myaddress + ":8080/stream?topic=/orign_image";
-			document.getElementById("color_image").src = "http://" + myaddress + ":8080/stream?topic=/colormodel_image";
+			myAddress = document.getElementById("addressSelect").value;
+			console.log("Connecting address is", myAddress)
+			ros.connect("ws://" + myAddress + ":9090");
+			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/orign_image";
+			document.getElementById("color_image").src = "http://" + myAddress + ":8080/stream?topic=/colormodel_image";
 		}
 
 		function ResetColorModelFunction() {
