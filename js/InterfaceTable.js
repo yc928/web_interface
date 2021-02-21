@@ -1,7 +1,9 @@
 //Allows the ID to stick to the left side
-$(window).load(function () {
-  $('.box').scroll(function () {
-      $(this).find('.inthesmallbox2').css('left', $(this).scrollLeft());
+$(window).load(function ()
+{
+  $('.box').scroll(function ()
+  {
+    $(this).find('.inthesmallbox2').css('left', $(this).scrollLeft());
   });
 });
 
@@ -112,7 +114,8 @@ function NewRelativePosition()
   document.getElementById('RelativePositionTable').appendChild(div2);
 
   //sets the relativePosition ID to be the same value as relativeSpeed ID
-  $('#relativePosition'+num).keyup(function (){
+  $('#relativePosition'+num).change(function ()
+  {
     $('#relativeSpeed'+num).val($(this).val());
   });
 }
@@ -172,7 +175,8 @@ function NewRelativeSpeed()
   document.getElementById('RelativeSpeedTable').appendChild(div2);
 
   //sets the relativeSpeed ID to be the same value as relativePosition ID
-  $('#relativeSpeed'+num).keyup(function (){
+  $('#relativeSpeed'+num).change(function ()
+  {
     $('#relativePosition'+num).val($(this).val());
   });
 }
@@ -232,7 +236,8 @@ function NewAbsolutePosition()
   document.getElementById('AbsolutePositionTable').appendChild(div2);
 
   //sets the absolutePosition ID to be the same value as absoluteSpeed ID
-  $('#absolutePosition'+num).keyup(function (){
+  $('#absolutePosition'+num).change(function ()
+  {
     $('#absoluteSpeed'+num).val($(this).val()); 
   });
 }
@@ -292,7 +297,8 @@ function NewAbsoluteSpeed()
   document.getElementById('AbsoluteSpeedTable').appendChild(div2);
   
   //sets the absoluteSpeed ID to be the same value as absolutePosition ID
-  $('#absoluteSpeed'+num).keyup(function (){
+  $('#absoluteSpeed'+num).change(function ()
+  {
     $('#absolutePosition'+num).val($(this).val()); 
   });
 }
