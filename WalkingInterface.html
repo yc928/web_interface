@@ -46,7 +46,8 @@
 			}
 			body
 			{
-				width: 1520px;
+				width: auto;
+				min-width: 950px;
 				height: 1000px;
 				overflow: visible;
 				background-size: cover;
@@ -242,6 +243,34 @@
 		var xpointvalue_tmp = 0;
 		var ypointvalue_tmp = 0;
 		/* Kick Ball Variables End */
+		document.onkeydown = getKeyboard;
+
+		function getKeyboard(e) {
+			switch(window.event.keyCode)
+			{
+				case 87:	//W, Forward
+					ForwardFun();
+					break;
+				case 83:	//S, Backward
+					BackwardFun();
+					break;
+				case 65:	//A, Left Move
+					LeftFun();
+					break;
+				case 68:	//D, Right Move
+					RightFun();
+					break;
+				case 81:	//Q, Left Turn
+					LeftTurnFun();
+					break;
+				case 69:	//E, Right Turn
+					RightTurnFun();
+					break;
+				// case 32:	//Space, Generate
+				// 	Generate();
+				// 	break;
+			}
+		}
 
 		function createTopics() {
 			if(SensorPackage_Subscriber != null)
@@ -1571,12 +1600,12 @@
 			{
 				SensorSet_msg.DesireSet = false;
 			}*/
-			if (document.getElementById("IMUReset").checked) {
+			// if (document.getElementById("IMUReset").checked) {
 				SensorSet_msg.IMUReset = true;
-			}
-			else {
-				SensorSet_msg.IMUReset = false;
-			}
+			// }
+			// else {
+			// 	SensorSet_msg.IMUReset = false;
+			// }
 			/*if (document.getElementById("ForceState").checked) {
 				SensorSet_msg.ForceState = true;
 			}
@@ -1630,11 +1659,11 @@
 <body>
 	<!-- NAV BAR -->
 	<ul>
-		<li><a target="_blank" style="text-decoration: underline;" class="navbarright" href="WalkingInterface.html">Walking Interface</a></li>
-		<li><a target="_blank" class="navbarright" href="ImageProcessInterface.html">Humanoid Interface</a></li>
-		<li><a target="_blank" class="navbarright" href="MotionControlInterface.html">Motion Controller</a></li>
+		<li><a target="_blank" style="text-decoration: underline;" class="navbarright" href="WalkingInterface.html">Walking</a></li>
+		<li><a target="_blank" class="navbarright" href="MotionControlInterface.html">Motion</a></li>
+		<li><a target="_blank" class="navbarright" href="ImageProcessInterface.html">ImageProcess</a></li>
 		<li><a target="_blank" class="navbarright" href="index.html">Home</a></li>
-		<li class="logo">
+		<li class="logo" style="width: 226px;">
 			<a target="_blank" href="index.html" class="logo"><img id="logoimg" src="./resources/TKU_ICLab/iclablogo-02.png"></a>
 		</li>
 	</ul>
@@ -1660,8 +1689,8 @@
 				</tr>
 			</table>
 		</div>
-		<div id="control" align="center">
-			<section id="SensorSet" align="left" style="float: left;width: 180px;">
+		<div id="control" align="center" >
+			<!--<section id="SensorSet" align="left" style="float: left;width: 180px;">
 				<h align="center" style="font-size: 25px">Sensor_Set</h></br>
 				<!--<table style="margin-top: 10px ">
 					<tr>
@@ -1695,16 +1724,17 @@
 						<td><input type="text" name="Gain_KD" id="Gain_KD" value="0" style="width: 70px"></td>
 					</tr>
 				</table>-->
-				<table style="margin-top: 20px "></table>
+				<!--<table style="margin-top: 20px "></table>-->
 					<!--<input style="margin-top: 10px " type="checkbox" id="DesireSet" value="DesireSet">ShowSensorValue-->
-					<input style="margin-top: 10px " type="checkbox" id="IMUReset" value="IMUReset">IMUReset&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<!--input style="margin-top: 10px " type="checkbox" id="IMUReset" value="IMUReset">IMUReset&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<!--input style="margin-top: 10px " type="checkbox" id="ForceState" value="ForceState">ForceState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input style="margin-top: 10px " type="checkbox" id="GainSet" value="GainSet">GainSet-->
-				</table>
-				<button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 20px;display: inline-block;" onclick="SendSensorSet()">Send</button>
-			</section>
-			<section id="SensorValue" align="left" style="float: left;width: 180px;">
-				<h align="center"style="font-size: 25px">Sensor_Value</h>
+				<!--/table>
+				<!--button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 20px;display: inline-block;" onclick="SendSensorSet()">Send</button>
+			</section>-->
+			
+			<section id="SensorValue" align="center" style="margin-left:calc(50% - 430px); float: left; min-width: 180px; max-width: 200px; width: 20%;">
+				<b><h align="center"style="font-size: 23px">Sensor_Value</h></b>
 				<table>
 					<tr>
 						<td style="color:#888;font-size: 18px">IMU:</td>
@@ -1759,9 +1789,17 @@
 						<td>Right_4:</td>
 						<td><input type="text" name="Right_4" id="Right_4" value="0" style="width: 70px"></td>
 					</tr>-->
+					<table style="margin-top: 20px "></table>
+					<!--<input style="margin-top: 10px " type="checkbox" id="DesireSet" value="DesireSet">ShowSensorValue-->
+					<!-- <input style="margin-top: 10px " type="checkbox" id="IMUReset" value="IMUReset">IMUReset<p></p> -->
+					<!--input style="margin-top: 10px " type="checkbox" id="ForceState" value="ForceState">ForceState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input style="margin-top: 10px " type="checkbox" id="GainSet" value="GainSet">GainSet-->
 				</table>
+				<button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 5px;display: inline-block;" onclick="SendSensorSet()">IMU reset</button>
+				</table>
+				
 			</section>
-			<section id="walkinggaitcontrol" style="float: left;margin-left: 0%">
+			<section id="walkinggaitcontrol" style="float: left; margin-left: 0%; min-width: 320px; max-width: 400px; width: 35%;">
 				<form action="">
 					<input type="radio" name="gender" value="Single" onclick="singleFun()" checked="checked"> Single
 					<input type="radio" name="gender" value="Continuous" onclick="ContinuousFun()"> Continuous<p></p>
@@ -1816,145 +1854,145 @@
 					</form>
 				</form>
 			</section>
-			<section id="singlestep" style="float: left;">
+			<section id="singlestep" style="float: left; margin-left: 0%; min-width: 300px; max-width: 350px; width: 35%;">
 				<b style="font-size: 25px;">Single Step</b>
-				<b style="font-size: 25px; display: none;" id="LongJumpTitle"> - Long Jump</b>
+				<b style="font-size: 25px; display: none;" id="LongJumpTitle">_LongJump</b>
 				<br /><br />
 				<table>
 					<tr>
 						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="Period_T" value="0" onchange="changePeriod_T_value(this.value)"></td>
+						<td><input type="text" name="Period_T" id="Period_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>T_DSP</td>
-						<td><input type="text" name="T_DSP" id="T_DSP" value="0" onchange="changeT_DSP_value(this.value)"></td>
+						<td><input type="text" name="T_DSP" id="T_DSP" value="0" style="width: 140px" onchange="changeT_DSP_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>BASE_Default_Z</td>
-						<td><input type="text" name="BASE_Default_Z" id="BASE_Default_Z" value="0" onchange="changeBASE_Default_Z_value(this.value)"></td>
+						<td><input type="text" name="BASE_Default_Z" id="BASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
 				</table>
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
-			<section id="continuousstep" style="float: left; display: none;">
+			<section id="continuousstep" style="float: left; margin-left: 0%; display: none; min-width: 300px; max-width: 350px; width: 33%;">
 				<b style="font-size: 25px;">Continuous Step</b>
 				&nbsp;&nbsp; <input type="checkbox" name="Continuousback" id="Continuousback" onclick="changeContinuousback()">Back
 				<br /><br />
 				<table>
 					<tr>
 						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="cPeriod_T" value="0" onchange="changePeriod_T_value(this.value)"></td>
+						<td><input type="text" name="Period_T" id="cPeriod_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>T_DSP</td>
-						<td><input type="text" name="T_DSP" id="cT_DSP" value="0" onchange="changeT_DSP_value(this.value)"></td>
+						<td><input type="text" name="T_DSP" id="cT_DSP" value="0" style="width: 140px" onchange="changeT_DSP_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>BASE_Default_Z</td>
-						<td><input type="text" name="BASE_Default_Z" id="cBASE_Default_Z" value="0" onchange="changeBASE_Default_Z_value(this.value)"></td>
+						<td><input type="text" name="BASE_Default_Z" id="cBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
 				</table>
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
-			<section id="lcupstep" style="float: left; display: none;">
+			<section id="lcupstep" style="float: left; margin-left: 0%; display: none; min-width: 300px; max-width: 350px; width: 33%;">
 				<b style="font-size: 25px;">LCup Step</b>
 				<br /><br />
 				<table>
 					<tr>
 						<td>-X_Swing_COM</td>
-						<td><input type="text" name="X_Swing" id="luX_Swing" value="0" onchange="changeX_Swing_value(this.value)"></td>
+						<td><input type="text" name="X_Swing" id="luX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Y_Swing</td>
-						<td><input type="text" name="Y_Swing" id="luY_Swing" value="0" onchange="changeY_Swing_value(this.value)"></td>
+						<td><input type="text" name="Y_Swing" id="luY_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Z_Swing</td>
-						<td><input type="text" name="Z_Swing" id="luZ_Swing" value="0" onchange="changeZ_Swing_value(this.value)"></td>
+						<td><input type="text" name="Z_Swing" id="luZ_Swing" value="0" style="width: 140px" onchange="changeZ_Swing_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="luPeriod_T" value="0" onchange="changePeriod_T_value(this.value)"></td>
+						<td><input type="text" name="Period_T" id="luPeriod_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Period_T2</td>
-						<td><input type="text" name="Period_T2" id="luPeriod_T2" value="0" onchange="changePeriod_T2_value(this.value)"></td>
+						<td><input type="text" name="Period_T2" id="luPeriod_T2" value="0" style="width: 140px" onchange="changePeriod_T2_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Sample_Time</td>
-						<td><input type="text" name="Sample_Time" id="luSample_Time" value="0" onchange="changeSample_Time_value(this.value)"></td>
+						<td><input type="text" name="Sample_Time" id="luSample_Time" value="0" style="width: 140px" onchange="changeSample_Time_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>OSC_LockRange</td>
-						<td><input type="text" name="OSC_LockRange" id="luOSC_LockRange" value="0" onchange="changeOSC_LockRange_value(this.value)"></td>
+						<td><input type="text" name="OSC_LockRange" id="luOSC_LockRange" value="0" style="width: 140px" onchange="changeOSC_LockRange_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>BASE_Default_Z</td>
-						<td><input type="text" name="BASE_Default_Z" id="luBASE_Default_Z" value="0" onchange="changeBASE_Default_Z_value(this.value)"></td>
+						<td><input type="text" name="BASE_Default_Z" id="luBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>X_Swing_COM</td>
-						<td><input type="text" name="X_Swing_COM" id="luX_Swing_COM" value="0" onchange="changeX_Swing_COM_value(this.value)"></td>
+						<td><input type="text" name="X_Swing_COM" id="luX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>BASE_LIFT_Z</td>
-						<td><input type="text" name="BASE_LIFT_Z" id="luBASE_LIFT_Z" value="0" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
+						<td><input type="text" name="BASE_LIFT_Z" id="luBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
 					</tr>
 				</table>
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
-			<section id="lcdownstep" style="float: left; display: none;">
+			<section id="lcdownstep" style="float: left; margin-left: 0%; display: none; min-width: 300px; max-width: 350px; width: 33%;">
 				<b style="font-size: 25px;">LCdown Step</b>
 				<br /><br />
 				<table>
 					<tr>
 						<td>-X_Swing_COM</td>
-						<td><input type="text" name="X_Swing" id="ldX_Swing" value="0" onchange="changeX_Swing_value(this.value)"></td>
+						<td><input type="text" name="X_Swing" id="ldX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Y_Swing</td>
-						<td><input type="text" name="Y_Swing" id="ldY_Swing" value="0" onchange="changeY_Swing_value(this.value)"></td>
+						<td><input type="text" name="Y_Swing" id="ldY_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Z_Swing</td>
-						<td><input type="text" name="Z_Swing" id="ldZ_Swing" value="0" onchange="changeZ_Swing_value(this.value)"></td>
+						<td><input type="text" name="Z_Swing" id="ldZ_Swing" value="0" style="width: 140px" onchange="changeZ_Swing_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="ldPeriod_T" value="0" onchange="changePeriod_T_value(this.value)"></td>
+						<td><input type="text" name="Period_T" id="ldPeriod_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Period_T2</td>
-						<td><input type="text" name="Period_T2" id="ldPeriod_T2" value="0" onchange="changePeriod_T2_value(this.value)"></td>
+						<td><input type="text" name="Period_T2" id="ldPeriod_T2" value="0" style="width: 140px" onchange="changePeriod_T2_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>Sample_Time</td>
-						<td><input type="text" name="Sample_Time" id="ldSample_Time" value="0" onchange="changeSample_Time_value(this.value)"></td>
+						<td><input type="text" name="Sample_Time" id="ldSample_Time" value="0" style="width: 140px" onchange="changeSample_Time_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>OSC_LockRange</td>
-						<td><input type="text" name="OSC_LockRange" id="ldOSC_LockRange" value="0" onchange="changeOSC_LockRange_value(this.value)"></td>
+						<td><input type="text" name="OSC_LockRange" id="ldOSC_LockRange" value="0" style="width: 140px" onchange="changeOSC_LockRange_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>BASE_Default_Z</td>
-						<td><input type="text" name="BASE_Default_Z" id="ldBASE_Default_Z" value="0" onchange="changeBASE_Default_Z_value(this.value)"></td>
+						<td><input type="text" name="BASE_Default_Z" id="ldBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>X_Swing_COM</td>
-						<td><input type="text" name="X_Swing_COM" id="ldX_Swing_COM" value="0" onchange="changeX_Swing_COM_value(this.value)"></td>
+						<td><input type="text" name="X_Swing_COM" id="ldX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>BASE_LIFT_Z</td>
-						<td><input type="text" name="BASE_LIFT_Z" id="ldBASE_LIFT_Z" value="0" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
+						<td><input type="text" name="BASE_LIFT_Z" id="ldBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
 					</tr>
 				</table>
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
-			<section id="KickBall" style="float: left; display: none;">
+			<section id="KickBall" style="float: left; display: none; width: auto;">
 				<b style="font-size: 25px; display: none;" id="LKickB">Left Kick Ball</b>
 				<b style="font-size: 25px; display: none;" id="RKickB">Right Kick Ball</b>
 				<br /><br />
