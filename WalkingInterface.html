@@ -131,6 +131,7 @@
 			Y_Swing_Shift: 0.6,
 			X_Swing_COM: 0.0,
 			BASE_LIFT_Z: 0.0,
+			Stand_Balance: false,
 			B_SplineParam: {
 				Kick_Point_X: 0.0,
 				Kick_Point_Y: 0.0,
@@ -645,6 +646,7 @@
 			parameter_msg.Y_Swing_Shift = Number(Y_Swing_Shift_tmp);
 			parameter_msg.X_Swing_COM = Number(X_Swing_COM_tmp);
 			parameter_msg.BASE_LIFT_Z = Number(BASE_LIFT_Z_tmp);
+			parameter_msg.Stand_Balance = document.getElementById("balance_").checked;
 			parameter_msg.B_SplineParam.Kick_Point_X = Number(Kick_Point_X_temp);
 			parameter_msg.B_SplineParam.Kick_Point_Y = Number(Kick_Point_Y_temp);
 			parameter_msg.B_SplineParam.Kick_Point_Z = Number(Kick_Point_Z_temp);
@@ -1941,6 +1943,10 @@
 						<td><input type="text" name="BASE_LIFT_Z" id="luBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
 					</tr>
 				</table>
+				<tr>
+					<td><input style="margin-top: 10px " type="checkbox" name="balance" id="balance_" value="balance"></td>
+					<td><label for="balance_">balance</label></td>
+				</tr>
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
