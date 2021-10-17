@@ -7,7 +7,7 @@
 	<link rel="SHORTCUT ICON" href="./picture/icon.png">
 
 	<link rel="stylesheet" type="text/css" rel="stylesheet" href="./css/style.css">
-	<title>Walking Interface</title>
+	<title>Balance Control Interface</title>
 	<style>
 			section {
         		background-color:  #333;
@@ -131,7 +131,6 @@
 			Y_Swing_Shift: 0.6,
 			X_Swing_COM: 0.0,
 			BASE_LIFT_Z: 0.0,
-			Stand_Balance: false,
 			B_SplineParam: {
 				Kick_Point_X: 0.0,
 				Kick_Point_Y: 0.0,
@@ -167,15 +166,15 @@
 			Yaw: 0,
 			sup_f: 0,
 			nsup_f: 0,
-			sensor_modeset: 0
-			// GainRoll: 0,
-			// GainPitch: 0,
-			// GainKP: 0,
-			// GainKD: 0,
 			// DesireSet: false,
 			// IMUReset: false,
 			// ForceState: false,
-			// GainSet: false
+			// GainSet: false,
+			// Roll_set: false,
+			// Pitch_set: false,
+			// CoM_set: false,
+			// Foot_Offset_set: false,
+			sensor_modeset: 0
 		});
 
 		var LoadWalkingGaitParameterClient = new ROSLIB.Service({
@@ -652,7 +651,6 @@
 			parameter_msg.Y_Swing_Shift = Number(Y_Swing_Shift_tmp);
 			parameter_msg.X_Swing_COM = Number(X_Swing_COM_tmp);
 			parameter_msg.BASE_LIFT_Z = Number(BASE_LIFT_Z_tmp);
-			parameter_msg.Stand_Balance = document.getElementById("balance_").checked;
 			parameter_msg.B_SplineParam.Kick_Point_X = Number(Kick_Point_X_temp);
 			parameter_msg.B_SplineParam.Kick_Point_Y = Number(Kick_Point_Y_temp);
 			parameter_msg.B_SplineParam.Kick_Point_Z = Number(Kick_Point_Z_temp);
@@ -1586,49 +1584,127 @@
 
 		function SendSensorSet()
 		{
+			// var roll = Number(document.getElementById("Set_Roll").value);
+			// var pitch = Number(document.getElementById("Set_Pitch").value);
+			// var yaw = Number(document.getElementById("Set_Yaw").value);
+			// var GainRoll = Number(document.getElementById("Gain_Roll").value);
+			// var GainPitch = Number(document.getElementById("Gain_Pitch").value);
+			// var GainKP = Number(document.getElementById("Gain_KP").value);
+			// var GainKD = Number(document.getElementById("Gain_KD").value);
+			// SensorSet_msg.Roll = parseInt(roll * 100);
+			// SensorSet_msg.Pitch = parseInt(pitch * 100);
+			// SensorSet_msg.Yaw = parseInt(yaw * 100);
+			// SensorSet_msg.GainRoll = parseInt(GainRoll * 10000);
+			// SensorSet_msg.GainPitch = parseInt(GainPitch * 10000);
+			// SensorSet_msg.GainKP = parseInt(GainKP * 100);
+			// SensorSet_msg.GainKD = parseInt(GainKD * 10000);
+			var sensor_P = 0;
+			var sensor_I = 0;
+			var sensor_D = 0;
+			var set_roll = 0;
+			var set_pitch = 0;
+			var sup_f = 0;
+			var nsup_f = 0;
 			var sensor_modeset = 0;
-			/*var roll = Number(document.getElementById("Set_Roll").value);
-			var pitch = Number(document.getElementById("Set_Pitch").value);
-			var yaw = Number(document.getElementById("Set_Yaw").value);
-			var GainRoll = Number(document.getElementById("Gain_Roll").value);
-			var GainPitch = Number(document.getElementById("Gain_Pitch").value);
-			var GainKP = Number(document.getElementById("Gain_KP").value);
-			var GainKD = Number(document.getElementById("Gain_KD").value);
-			SensorSet_msg.Roll = parseInt(roll * 100);
-			SensorSet_msg.Pitch = parseInt(pitch * 100);
-			SensorSet_msg.Yaw = parseInt(yaw * 100);
-			SensorSet_msg.GainRoll = parseInt(GainRoll * 10000);
-			SensorSet_msg.GainPitch = parseInt(GainPitch * 10000);
-			SensorSet_msg.GainKP = parseInt(GainKP * 100);
-			SensorSet_msg.GainKD = parseInt(GainKD * 10000);
-			if(document.getElementById("DesireSet").checked)
+			if(document.getElementById("Set_chase_").checked)
 			{
-				SensorSet_msg.DesireSet = true;
+				sensor_modeset += 0x08;
+				// SensorSet_msg.GainSet = true;
+				// set_roll = Number(document.getElementById("Set_Roll").value);
+				// set_pitch = Number(document.getElementById("Set_Pitch").value);
+				// SensorSet_msg.Roll = parseInt(set_roll * 100);
+				// SensorSet_msg.Pitch = parseInt(set_pitch * 100);
 			}
-			else
-			{
-				SensorSet_msg.DesireSet = false;
-			}*/
-			// if (document.getElementById("IMUReset").checked) {
-				sensor_modeset += 0x02;
-				SensorSet_msg.sensor_modeset = sensor_modeset;
-				// SensorSet_msg.IMUReset = true;
+			// else
+			// {
+			// 	SensorSet_msg.GainSet = false;
 			// }
-			// else {
+			
+			if(document.getElementById("Roll_set").checked)
+			{
+				sensor_modeset += 0x10;
+				// SensorSet_msg.Roll_set = true;
+				sensor_P = Number(document.getElementById("Roll_P").value);
+				sensor_I = Number(document.getElementById("Roll_I").value);
+				sensor_D = Number(document.getElementById("Roll_D").value);
+				// SensorSet_msg.sensor_P = parseInt(sensor_P * 1000);
+				// SensorSet_msg.sensor_I = parseInt(sensor_I * 1000);
+				// SensorSet_msg.sensor_D = parseInt(sensor_D * 1000);
+			}
+			// else 
+			// {
+			// 	SensorSet_msg.Roll_set = false;
+			// }
+
+			if(document.getElementById("Pitch_set").checked)
+			{
+				sensor_modeset += 0x20;
+				// SensorSet_msg.Pitch_set = true;
+				sensor_P = Number(document.getElementById("Pitch_P").value);
+				sensor_I = Number(document.getElementById("Pitch_I").value);
+				sensor_D = Number(document.getElementById("Pitch_D").value);
+				// SensorSet_msg.sensor_P = parseInt(sensor_P * 1000);
+				// SensorSet_msg.sensor_I = parseInt(sensor_I * 1000);
+				// SensorSet_msg.sensor_D = parseInt(sensor_D * 1000);
+			}
+			// else 
+			// {
+			// 	SensorSet_msg.Pitch_set = false;
+			// }
+			if(document.getElementById("CoM_set").checked)
+			{
+				sensor_modeset += 0x40;
+				// SensorSet_msg.CoM_set = true;
+				sensor_P = Number(document.getElementById("CoM_P").value);
+				sensor_I = Number(document.getElementById("CoM_I").value);
+				sensor_D = Number(document.getElementById("CoM_D").value);
+				// SensorSet_msg.sensor_P = parseInt(sensor_P * 1000);
+				// SensorSet_msg.sensor_I = parseInt(sensor_I * 1000);
+				// SensorSet_msg.sensor_D = parseInt(sensor_D * 1000);
+			}
+			// else 
+			// {
+			// 	SensorSet_msg.CoM_set = false;
+			// }
+			if(document.getElementById("Foot_Offset_set").checked)
+			{
+				sensor_modeset += 0x80;
+				// SensorSet_msg.Foot_Offset_set = true;
+				// sup_f = Number(document.getElementById("sup_f").value);
+				// nsup_f = Number(document.getElementById("nsup_f").value);
+				// SensorSet_msg.sup_f = parseInt(sup_f * 100);
+				// SensorSet_msg.nsup_f = parseInt(nsup_f * 100);
+			}
+			// else 
+			// {
+			// 	SensorSet_msg.Foot_Offset_set = false;
+			// }
+			if(document.getElementById("IMU_reset_").checked)
+			{
+				sensor_modeset += 0x02;
+				// SensorSet_msg.IMUReset = true;
+			}
+			// else
+			// {
 			// 	SensorSet_msg.IMUReset = false;
 			// }
-			/*if (document.getElementById("ForceState").checked) {
-				SensorSet_msg.ForceState = true;
-			}
-			else {
-				SensorSet_msg.ForceState = false;
-			}
-			if (document.getElementById("GainSet").checked) {
-				SensorSet_msg.GainSet = true;
-			}
-			else {
-				SensorSet_msg.GainSet = false;
-			}*/
+
+				set_roll = Number(document.getElementById("Set_Roll").value);
+				set_pitch = Number(document.getElementById("Set_Pitch").value);
+				SensorSet_msg.Roll = parseInt(set_roll * 1000);
+				SensorSet_msg.Pitch = parseInt(set_pitch * 1000);
+			
+				SensorSet_msg.sensor_P = parseInt(sensor_P * 1000);
+				SensorSet_msg.sensor_I = parseInt(sensor_I * 1000);
+				SensorSet_msg.sensor_D = parseInt(sensor_D * 1000);
+				console.log(document.getElementById("Set_Roll").value);
+				sup_f = Number(document.getElementById("sup_f").value);
+				nsup_f = Number(document.getElementById("nsup_f").value);
+				SensorSet_msg.sup_f = parseInt(sup_f * 1000);
+				SensorSet_msg.nsup_f = parseInt(nsup_f * 1000);
+			// SensorSet_msg.DesireSet = true;
+			// sensor_modeset += 0x01;
+			SensorSet_msg.sensor_modeset = sensor_modeset;
 			SensorSet_Publisher.publish(SensorSet_msg);
 		}
 		function SendGainSet()
@@ -1685,7 +1761,7 @@
 	</p>
 	<form>
 		<div id="head" align="center">
-			<h1 align="center" id="header" style="color: white;">Walking Interface</h1>
+			<h1 align="center" id="header" style="color: white;">Balance Control Interface</h1>
 			<table>
 				<tr>
 					<td>
@@ -1701,50 +1777,8 @@
 			</table>
 		</div>
 		<div id="control" align="center" >
-			<!--<section id="SensorSet" align="left" style="float: left;width: 180px;">
-				<h align="center" style="font-size: 25px">Sensor_Set</h></br>
-				<!--<table style="margin-top: 10px ">
-					<tr>
-						<td>Set_Roll:</td>
-						<td><input type="text" name="Set_Roll" id="Set_Roll" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Set_Pitch:</td>
-						<td><input type="text" name="Set_Pitch" id="Set_Pitch" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Set_Yaw:</td>
-						<td><input type="text" name="Set_Yaw" id="Set_Yaw" value="0" style="width: 70px"></td>
-					</tr>
-				</table>
-				<table style="margin-top: 20px ">
-					<tr>
-						<td>Gain_Roll:</td>
-						<td><input type="text" name="Gain_Roll" id="Gain_Roll" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Gain_Pitch:</td>
-						<td><input type="text" name="Gain_Pitch" id="Gain_Pitch" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Gain_KP:</td>
-						<td><input type="text" name="Gain_KP" id="Gain_KP" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Gain_KD:</td>
-						<td><input type="text" name="Gain_KD" id="Gain_KD" value="0" style="width: 70px"></td>
-					</tr>
-				</table>-->
-				<!--<table style="margin-top: 20px "></table>-->
-					<!--<input style="margin-top: 10px " type="checkbox" id="DesireSet" value="DesireSet">ShowSensorValue-->
-					<!--input style="margin-top: 10px " type="checkbox" id="IMUReset" value="IMUReset">IMUReset&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<!--input style="margin-top: 10px " type="checkbox" id="ForceState" value="ForceState">ForceState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input style="margin-top: 10px " type="checkbox" id="GainSet" value="GainSet">GainSet-->
-				<!--/table>
-				<!--button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 20px;display: inline-block;" onclick="SendSensorSet()">Send</button>
-			</section>-->
-			
-			<section id="SensorValue" align="center" style="margin-left:calc(50% - 430px); float: left; min-width: 180px; max-width: 200px; width: 20%;">
+			<div align="center" style="float: center; width: 530px;  ">
+			<section id="SensorValue" align="center" style="margin-left: 0%;float: left; width: 180px">
 				<b><h align="center"style="font-size: 23px">Sensor_Value</h></b>
 				<table>
 					<tr>
@@ -1762,324 +1796,81 @@
 						<td>Yaw:</td>
 						<td><input type="text" name="Yaw" id="Yaw" value="0" style="width: 70px"></td>
 					</tr>
-					<!--<tr>
-						<td>&nbsp</td>
-					</tr>
-					<tr>
-						<td style="color:#888;font-size: 18px">Force:</td>
-					</tr>
-					<tr>
-						<td>Left_1:</td>
-						<td><input type="text" name="Left_1" id="Left_1" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Left_2:</td>
-						<td><input type="text" name="Left_2" id="Left_2" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Left_3:</td>
-						<td><input type="text" name="Left_3" id="Left_3" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Left_4:</td>
-						<td><input type="text" name="Left_4" id="Left_4" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Right_1:</td>
-						<td><input type="text" name="Right_1" id="Right_1" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Right_2:</td>
-						<td><input type="text" name="Right_2" id="Right_2" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Right_3:</td>
-						<td><input type="text" name="Right_3" id="Right_3" value="0" style="width: 70px"></td>
-					</tr>
-					<tr>
-						<td>Right_4:</td>
-						<td><input type="text" name="Right_4" id="Right_4" value="0" style="width: 70px"></td>
-					</tr>-->
 					<table style="margin-top: 20px "></table>
-					<!--<input style="margin-top: 10px " type="checkbox" id="DesireSet" value="DesireSet">ShowSensorValue-->
-					<!-- <input style="margin-top: 10px " type="checkbox" id="IMUReset" value="IMUReset">IMUReset<p></p> -->
-					<!--input style="margin-top: 10px " type="checkbox" id="ForceState" value="ForceState">ForceState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input style="margin-top: 10px " type="checkbox" id="GainSet" value="GainSet">GainSet-->
 				</table>
-				<button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 5px;display: inline-block;" onclick="SendSensorSet()">IMU reset</button>
+				<!-- <button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 5px;display: inline-block;" onclick="SendSensorSet()">IMU reset</button> -->
 				</table>
 				
 			</section>
-			<section id="walkinggaitcontrol" style="float: left; margin-left: 0%; min-width: 320px; max-width: 400px; width: 35%;">
-				<form action="">
-					<input type="radio" name="gender" value="Single" onclick="singleFun()" checked="checked"> Single
-					<input type="radio" name="gender" value="Continuous" onclick="ContinuousFun()"> Continuous<p></p>
-					<input type="radio" name="gender" value="LC_up" onclick="LC_upFun()"> LC_up
-					<input type="radio" name="gender" value="LC_down" onclick="LC_downFun()"> LC_down<p></p>
-					<input type="radio" name="gender" value="LongJump" onclick="LongJumpFun()"> Long_Jump
-					<input type="radio" name="gender" value="RKickB" onclick="RKickBallFun()"> RKickB
-					<input type="radio" name="gender" value="LKickB" onclick="LKickBallFun()"> LKickB<p></p>
-				</form>
-				<form>
-					<table>
-						<tr>
-							<td>X</td>
-							<td><input type="text" name="Xvalue" id="Xvalue" value="0" onchange="changeXvalue(this.value)"></td>
-						</tr>
-						<tr>
-							<td>Y</td>
-							<td><input type="text" name="Yvalue" id="Yvalue" value="0" onchange="changeYvalue(this.value)"></td>
-						</tr>
-						<tr>
-							<td>Z</td>
-							<td><input type="text" name="Zvalue" id="Zvalue" value="0"></td>
-						</tr>
-						<tr>
-							<td>Theta</td>
-							<td><input type="text" name="Thetavalue" id="Thetavalue" value="0" onchange="changethetavalue(this.value)"></td>
-						</tr>
-					</table>
-					<br />
-					<button type="button" style="width: 132px;height: 40px; margin: 2px; display: inline-block;" onclick="Load()">Load</button>
-					<input type="button" id="Generate_Button" style="width: 132px;height: 40px; margin: 2px; display: inline-block;" onclick="Generate()" value="Generate"></input>
-					<br />
-					<button type="button" style="width: 85px;height: 40px; margin: 2px; display: inline-block;" onclick="LeftTurnFun()">Left Turn</button>
-					<button type="button" style="width: 85px;height: 40px; margin: 2px; display: inline-block;" onclick="ForwardFun()">Forward</button>
-					<button type="button" style="width: 85px;height: 40px; margin: 2px; display: inline-block;" onclick="RightTurnFun()">Right Turn</button>
-					<br>
-					<button type="button" style="width: 85px;height: 40px; margin: 2px; display: inline-block;" onclick="LeftFun()">Left Move</button>
-					<button type="button" style="width: 85px;height: 40px; margin: 2px; display: inline-block;" onclick="RightFun()">Right Move</button>
-					<br>
-					<button type="button" style="width: 85px;height: 40px; margin: 2px; display: inline-block;" onclick="BackwardFun()">Backward</button>
-					<br>
-					<div style="float:left; margin-top: 40px;margin-right: 10px" ;>
-						<input type="checkbox" id="wavebutton" value="Wave" onclick="showwavefun()"> Wave
-					</div>
-					<form>
-						<select id="IMU_Control" style="width: 80px;height: 25px;float: right;margin-top: 40px;">
-							<option value="0">No_IMU</option>
-							<option value="1">Y_IMU</option>
-							<option value="2">X_IMU</option>
-							<option value="3">ALL_IMU</option>
-						</select>
-					</form>
-				</form>
-			</section>
-			<section id="singlestep" style="float: left; margin-left: 0%; min-width: 300px; max-width: 350px; width: 35%;">
-				<b style="font-size: 25px;">Single Step</b>
-				<b style="font-size: 25px; display: none;" id="LongJumpTitle">_LongJump</b>
-				<br /><br />
-				<table>
+			<section id="SensorValue" align="center" style="margin-left: 0%;float: left; width: 330px">
+				<b><h align="center"style="font-size: 23px">Sensor_Parameter</h></b>
+				<table style="margin-top: 10px ">
 					<tr>
-						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="Period_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
+						<td></td>
+						<td></td>
+						<td>P</td>
+						<td>I</td>
+						<td>D</td>
 					</tr>
 					<tr>
-						<td>T_DSP</td>
-						<td><input type="text" name="T_DSP" id="T_DSP" value="0" style="width: 140px" onchange="changeT_DSP_value(this.value)"></td>
+						<td><input style="margin-top: 10px " type="radio" name="sensor" id="Roll_set" value="Roll"></td>
+						<td><label for="Roll_set">Roll:</label></td>
+						<td><input type="text" name="Roll_P" id="Roll_P" value="0" style="width: 50px"></td>
+						<td><input type="text" name="Roll_I" id="Roll_I" value="0" style="width: 50px"></td>
+						<td><input type="text" name="Roll_D" id="Roll_D" value="0" style="width: 50px"></td>
 					</tr>
 					<tr>
-						<td>BASE_Default_Z</td>
-						<td><input type="text" name="BASE_Default_Z" id="BASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
+						<td><input style="margin-top: 10px " type="radio" name="sensor" id="Pitch_set" value="Pitch"></td>
+						<td><label for="Pitch_set">Pitch:</label></td>
+						<td><input type="text" name="Pitch_P" id="Pitch_P" value="0" style="width: 50px"></td>
+						<td><input type="text" name="Pitch_I" id="Pitch_I" value="0" style="width: 50px"></td>
+						<td><input type="text" name="Pitch_D" id="Pitch_D" value="0" style="width: 50px"></td>
 					</tr>
+					<tr>
+						<td><input style="margin-top: 10px " type="radio" name="sensor" id="CoM_set" value="CoM"></td>
+						<td><label for="CoM_set">CoM:</label></td>
+						<td><input type="text" name="CoM_P" id="CoM_P" value="0" style="width: 50px"></td>
+						<td><input type="text" name="CoM_I" id="CoM_I" value="0" style="width: 50px"></td>
+						<td><input type="text" name="CoM_D" id="CoM_D" value="0" style="width: 50px"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>Roll</td>
+						<td>Pitch</td>
+					</tr>
+					<tr>
+						<td><input style="margin-top: 10px " type="radio" name="sensor" id="Set_chase_" value="Set_chase"></td>
+						<td><label for="Set_chase_">Set_chase:</label></td>
+						<td><input type="text" name="Set_Roll" id="Set_Roll" value="0" style="width: 50px"></td>
+						<td><input type="text" name="Set_Pitch" id="Set_Pitch" value="0" style="width: 50px"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>sup</td>
+						<td>nsup</td>
+					</tr>
+					<tr>
+						<td><input style="margin-top: 10px " type="radio" name="sensor" id="Foot_Offset_set" value="Foot_Offset"></td>
+						<td><label for="Foot_Offset_set">Foot_Offset:</label></td>
+						<td><input type="text" name="sup_f" id="sup_f" value="0" style="width: 50px"></td>
+						<td><input type="text" name="nsup_f" id="nsup_f" value="0" style="width: 50px"></td>
+					</tr>
+					<!-- <tr>
+						<td><input style="margin-top: 10px " type="radio" name="sensor" id="Para_reset_" value="Para_reset"></td>
+						<td><label for="Para_reset_">Para_reset</label></td>
+					</tr> -->
+					<tr>
+						<td><input style="margin-top: 10px " type="checkbox" name="sensor" id="IMU_reset_" value="IMU_reset"></td>
+						<td><label for="IMU_reset_">IMU_reset</label></td>
+					</tr>
+					<table style="margin-top: 20px "></table>
 				</table>
-				<br />
-				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
-			</section>
-			<section id="continuousstep" style="float: left; margin-left: 0%; display: none; min-width: 300px; max-width: 350px; width: 33%;">
-				<b style="font-size: 25px;">Continuous Step</b>
-				&nbsp;&nbsp; <input type="checkbox" name="Continuousback" id="Continuousback" onclick="changeContinuousback()">Back
-				<br /><br />
-				<table>
-					<tr>
-						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="cPeriod_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>T_DSP</td>
-						<td><input type="text" name="T_DSP" id="cT_DSP" value="0" style="width: 140px" onchange="changeT_DSP_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>BASE_Default_Z</td>
-						<td><input type="text" name="BASE_Default_Z" id="cBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
-					</tr>
+				<button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 5px;display: inline-block;" onclick="SendSensorSet()">Sensor Set</button>
 				</table>
-				<br />
-				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
-			<section id="lcupstep" style="float: left; margin-left: 0%; display: none; min-width: 300px; max-width: 350px; width: 33%;">
-				<b style="font-size: 25px;">LCup Step</b>
-				<br /><br />
-				<table>
-					<tr>
-						<td>-X_Swing_COM</td>
-						<td><input type="text" name="X_Swing" id="luX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Y_Swing</td>
-						<td><input type="text" name="Y_Swing" id="luY_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Z_Swing</td>
-						<td><input type="text" name="Z_Swing" id="luZ_Swing" value="0" style="width: 140px" onchange="changeZ_Swing_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="luPeriod_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Period_T2</td>
-						<td><input type="text" name="Period_T2" id="luPeriod_T2" value="0" style="width: 140px" onchange="changePeriod_T2_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Sample_Time</td>
-						<td><input type="text" name="Sample_Time" id="luSample_Time" value="0" style="width: 140px" onchange="changeSample_Time_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>OSC_LockRange</td>
-						<td><input type="text" name="OSC_LockRange" id="luOSC_LockRange" value="0" style="width: 140px" onchange="changeOSC_LockRange_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>BASE_Default_Z</td>
-						<td><input type="text" name="BASE_Default_Z" id="luBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>X_Swing_COM</td>
-						<td><input type="text" name="X_Swing_COM" id="luX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>BASE_LIFT_Z</td>
-						<td><input type="text" name="BASE_LIFT_Z" id="luBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
-					</tr>
-				</table>
-				<tr>
-					<td><input style="margin-top: 10px " type="checkbox" name="balance" id="balance_" value="balance"></td>
-					<td><label for="balance_">balance</label></td>
-				</tr>
-				<br />
-				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
-			</section>
-			<section id="lcdownstep" style="float: left; margin-left: 0%; display: none; min-width: 300px; max-width: 350px; width: 33%;">
-				<b style="font-size: 25px;">LCdown Step</b>
-				<br /><br />
-				<table>
-					<tr>
-						<td>-X_Swing_COM</td>
-						<td><input type="text" name="X_Swing" id="ldX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Y_Swing</td>
-						<td><input type="text" name="Y_Swing" id="ldY_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Z_Swing</td>
-						<td><input type="text" name="Z_Swing" id="ldZ_Swing" value="0" style="width: 140px" onchange="changeZ_Swing_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="ldPeriod_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Period_T2</td>
-						<td><input type="text" name="Period_T2" id="ldPeriod_T2" value="0" style="width: 140px" onchange="changePeriod_T2_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Sample_Time</td>
-						<td><input type="text" name="Sample_Time" id="ldSample_Time" value="0" style="width: 140px" onchange="changeSample_Time_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>OSC_LockRange</td>
-						<td><input type="text" name="OSC_LockRange" id="ldOSC_LockRange" value="0" style="width: 140px" onchange="changeOSC_LockRange_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>BASE_Default_Z</td>
-						<td><input type="text" name="BASE_Default_Z" id="ldBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>X_Swing_COM</td>
-						<td><input type="text" name="X_Swing_COM" id="ldX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>BASE_LIFT_Z</td>
-						<td><input type="text" name="BASE_LIFT_Z" id="ldBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
-					</tr>
-				</table>
-				<br />
-				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
-			</section>
-			<section id="KickBall" style="float: left; display: none; width: auto;">
-				<b style="font-size: 25px; display: none;" id="LKickB">Left Kick Ball</b>
-				<b style="font-size: 25px; display: none;" id="RKickB">Right Kick Ball</b>
-				<br /><br />
-				<table>
-					<tr>
-						<td>Y_Swing</td>
-						<td><input type="text" name="Y_Swing" id="KiY_Swing" value="0" onchange="changeY_Swing_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Period_T</td>
-						<td><input type="text" name="Period_T" id="KiPeriod_T" value="0" onchange="changePeriod_T_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Kick_Point_X</td>
-						<td><input type="text" name="Kick_Point_X" id="Kick_Point_X" value="0" onchange="changeKick_Point_X_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Kick_Point_Y</td>
-						<td><input type="text" name="Kick_Point_Y" id="Kick_Point_Y" value="0" onchange="changeKick_Point_Y_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Kick_Point_Z</td>
-						<td><input type="text" name="Kick_Point_Z" id="Kick_Point_Z" value="0" onchange="changeKick_Point_Z_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Back_Point_X</td>
-						<td><input type="text" name="Back_Point_X" id="Back_Point_X" value="0" onchange="changeBack_Point_X_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Back_Point_Z</td>
-						<td><input type="text" name="Back_Point_Z" id="Back_Point_Z" value="0" onchange="changeBack_Point_Z_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Support_Foot_Hip_Upper_Pitch</td>
-						<td><input type="text" name="Support_Foot_Hip_Upper_Pitch" id="Support_Foot_Hip_Upper_Pitch" value="0" onchange="changeSupport_Foot_Hip_Upper_Pitch_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Support_Foot_Ankle_Upper_Pitch</td>
-						<td><input type="text" name="Support_Foot_Ankle_Upper_Pitch" id="Support_Foot_Ankle_Upper_Pitch" value="0" onchange="changeSupport_Foot_Ankle_Upper_Pitch_value(this.value)"></td>
-					</tr>
-					<tr>
-						<td>Kick_Foot_Ankle_Upper_Pitch</td>
-						<td><input type="text" name="Kick_Foot_Ankle_Upper_Pitch" id="Kick_Foot_Ankle_Upper_Pitch" value="0" onchange="changeKick_Foot_Ankle_Upper_Pitch_value(this.value)"></td>
-					</tr>
-				</table>
-				<br />
-				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
-			</section>
-			<div id="Wave" style="float: right; display: none; margin-right: 14%;margin-top: 3%;">
-				<form action="" style="float: left;">
-					<input type="checkbox" id="checkRmoveX" onclick="DrawRmoveXFun()"> R_move_X
-					<input type="checkbox" id="checkRmoveY" onclick="DrawRmoveYFun()"> R_move_Y
-					<input type="checkbox" id="checkRmoveZ" onclick="DrawRmoveZFun()"> R_move_Z
-					<input type="checkbox" id="checkRTheta" onclick="DrawRThetaFun()"> R_Theta<p></p>
-					<input type="checkbox" id="checkLmoveX" onclick="DrawLmoveXFun()"> L_move_X
-					<input type="checkbox" id="checkLmoveY" onclick="DrawLmoveYFun()"> L_move_Y
-					<input type="checkbox" id="checkLmoveZ" onclick="DrawLmoveZFun()"> L_move_Z
-					<input type="checkbox" id="checkLTheta" onclick="DrawLThetaFun()"> L_Theta<p></p>
-					<input type="checkbox" id="checkmoveCOMX" onclick="DrawmoveCOMXFun()"> move_COM_X
-					<input type="checkbox" id="checkmoveCOMY" onclick="DrawmoveCOMYFun()"> move_COM_Y
-					<input type="checkbox" id="checkmoveCOMZ" onclick="DrawmoveCOMZFun()"> move_COM_Z<p></p>
-					<br>
-					</br>
-					<b style="font-size: 25px ;float: left;margin: 10px;">Wave</b>
-					<td><button type="button" style="width: 150px;height: 40px;float: left;margin-right: 10px;margin-left: 15px" id="GenerateWave" onclick="GenerateWaveFun()">GenerateWave</button></td>
-					<td><button type="button" style="width: 80px;height: 40px;float: left;margin-right: 10px;" id="DrawWave" onclick="ClearDrawFun()">Clear</button></td>
-				</form>
-				<table>
-					<canvas id="myCanvas" width="350" height="200">
-					</canvas>
-				</table>
-			</div>
+		</div>
 		</div>
 	</form>
 </body>
