@@ -159,9 +159,9 @@
 			messageType: 'tku_msgs/SensorSet'
 		});
 		var SensorSet_msg = new ROSLIB.Message({
-			Sensor_P: 0,
-			Sensor_I: 0,
-			Sensor_D: 0,
+			sensor_P: 0,
+			sensor_I: 0,
+			sensor_D: 0,
 			Roll: 0,
 			Pitch: 0,
 			Yaw: 0,
@@ -1586,6 +1586,7 @@
 
 		function SendSensorSet()
 		{
+			var sensor_modeset = 0;
 			/*var roll = Number(document.getElementById("Set_Roll").value);
 			var pitch = Number(document.getElementById("Set_Pitch").value);
 			var yaw = Number(document.getElementById("Set_Yaw").value);
@@ -1609,7 +1610,8 @@
 				SensorSet_msg.DesireSet = false;
 			}*/
 			// if (document.getElementById("IMUReset").checked) {
-				SensorSet_msg.sensor_modeset += 0x02;
+				sensor_modeset += 0x02;
+				SensorSet_msg.sensor_modeset = sensor_modeset;
 				// SensorSet_msg.IMUReset = true;
 			// }
 			// else {
