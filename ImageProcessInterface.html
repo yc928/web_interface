@@ -617,23 +617,11 @@
 			}
 		}
 		function showHorizontalPosition(newValue) {
-			if (window.event.keyCode == 13) {
-				if (Number(newValue) < Number(document.getElementById("HorizontalPositionRange").min))
-				{
-					newValue = Number(document.getElementById("HorizontalPositionRange").min);
-					document.getElementById("HorizontalPositionValue").value = Number(newValue);
-				}
-				else if (Number(newValue) > Number(document.getElementById("HorizontalPositionRange").max))
-				{
-					newValue = Number(document.getElementById("HorizontalPositionRange").max);
-					document.getElementById("HorizontalPositionValue").value = Number(newValue);
-				}
-				document.getElementById("HorizontalPositionRange").value = Number(newValue);
-				HeadPackagecmd.ID = Number(1);
-				HeadPackagecmd.Position = Number(document.getElementById("HorizontalPositionValue").value);
-				HeadPackagecmd.Speed = Number(document.getElementById("HorizontalSpeedValue").value);
-				Head_Topic.publish(HeadPackagecmd);
-			}
+			document.getElementById("HorizontalPositionValue").value = newValue;
+			HeadPackagecmd.ID = Number(1);
+			HeadPackagecmd.Position = Number(document.getElementById("HorizontalPositionValue").value);
+			HeadPackagecmd.Speed = Number(document.getElementById("HorizontalSpeedValue").value);
+			Head_Topic.publish(HeadPackagecmd);
 		}
 
 		function rangeHorizontalPosition(newValue) {
@@ -644,23 +632,11 @@
 			Head_Topic.publish(HeadPackagecmd);
 		}
 		function showHorizontalSpeed(newValue) {
-			if (window.event.keyCode == 13) {
-				if (Number(newValue) < Number(document.getElementById("HorizontalSpeedRange").min))
-				{
-					newValue = Number(document.getElementById("HorizontalSpeedRange").min);
-					document.getElementById("HorizontalSpeedValue").value = Number(newValue);
-				}
-				else if (Number(newValue) > Number(document.getElementById("HorizontalSpeedRange").max))
-				{
-					newValue = Number(document.getElementById("HorizontalSpeedRange").max);
-					document.getElementById("HorizontalSpeedValue").value = Number(newValue);
-				}
-				document.getElementById("HorizontalSpeedRange").value = Number(newValue);
-				HeadPackagecmd.ID = Number(1);
-				HeadPackagecmd.Position = Number(document.getElementById("HorizontalPositionValue").value);
-				HeadPackagecmd.Speed = Number(document.getElementById("HorizontalSpeedValue").value);
-				Head_Topic.publish(HeadPackagecmd);
-			}
+			document.getElementById("HorizontalSpeedValue").value = newValue;
+			HeadPackagecmd.ID = Number(1);
+			HeadPackagecmd.Position = Number(document.getElementById("HorizontalPositionValue").value);
+			HeadPackagecmd.Speed = Number(document.getElementById("HorizontalSpeedValue").value);
+			Head_Topic.publish(HeadPackagecmd);
 		}
 
 		function rangeHorizontalSpeed(newValue) {
@@ -671,23 +647,11 @@
 			Head_Topic.publish(HeadPackagecmd);
 		}
 		function showVerticalPosition(newValue) {
-			if (window.event.keyCode == 13) {
-				if (Number(newValue) < Number(document.getElementById("VerticalPositionRange").min))
-				{
-					newValue = Number(document.getElementById("VerticalPositionRange").min);
-					document.getElementById("VerticalPositionValue").value = Number(newValue);
-				}
-				else if (Number(newValue) > Number(document.getElementById("VerticalPositionRange").max))
-				{
-					newValue = Number(document.getElementById("VerticalPositionRange").max);
-					document.getElementById("VerticalPositionValue").value = Number(newValue);
-				}
-				document.getElementById("VerticalPositionRange").value = Number(newValue);
-				HeadPackagecmd.ID = Number(2);
-				HeadPackagecmd.Position = Number(document.getElementById("VerticalPositionValue").value);
-				HeadPackagecmd.Speed = Number(document.getElementById("VerticalSpeedValue").value);
-				Head_Topic.publish(HeadPackagecmd);
-			}
+			document.getElementById("VerticalPositionValue").value = newValue;
+			HeadPackagecmd.ID = Number(2);
+			HeadPackagecmd.Position = Number(document.getElementById("VerticalPositionValue").value);
+			HeadPackagecmd.Speed = Number(document.getElementById("VerticalSpeedValue").value);
+			Head_Topic.publish(HeadPackagecmd);
 		}
 
 		function rangeVerticalPosition(newValue) {
@@ -698,23 +662,11 @@
 			Head_Topic.publish(HeadPackagecmd);
 		}
 		function showVerticalSpeed(newValue) {
-			if (window.event.keyCode == 13) {
-				if (Number(newValue) < Number(document.getElementById("VerticalSpeedRange").min))
-				{
-					newValue = Number(document.getElementById("VerticalSpeedRange").min);
-					document.getElementById("VerticalSpeedValue").value = Number(newValue);
-				}
-				else if (Number(newValue) > Number(document.getElementById("VerticalSpeedRange").max))
-				{
-					newValue = Number(document.getElementById("VerticalSpeedRange").max);
-					document.getElementById("VerticalSpeedValue").value = Number(newValue);
-				}
-				document.getElementById("VerticalSpeedRange").value = Number(newValue);
-				HeadPackagecmd.ID = Number(2);
-				HeadPackagecmd.Position = Number(document.getElementById("VerticalPositionValue").value);
-				HeadPackagecmd.Speed = Number(document.getElementById("VerticalSpeedValue").value);
-				Head_Topic.publish(HeadPackagecmd);
-			}
+			document.getElementById("VerticalSpeedValue").value = newValue;
+			HeadPackagecmd.ID = Number(2);
+			HeadPackagecmd.Position = Number(document.getElementById("VerticalPositionValue").value);
+			HeadPackagecmd.Speed = Number(document.getElementById("VerticalSpeedValue").value);
+			Head_Topic.publish(HeadPackagecmd);
 
 		}
 
@@ -733,14 +685,14 @@
 	</script>
 	<style type="text/css">
 		body {
-			width: auto;
-			min-width: 950px;
+			width: 1520px;
 			height: 1000px;
 			overflow: visible;
 			background-image: url(./picture/Background.jpg);
 			background-size: cover;
 			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 		}
+
 
 		#container {
 			background-color: #333;
@@ -828,9 +780,9 @@
 <body>
 	<!-- NAV BAR -->
 	<ul>
-		<li><a target="_blank" class="navbarright" href="WalkingInterface.html">Walking</a></li>
-		<li><a target="_blank" class="navbarright" href="MotionControlInterface.html">Motion</a></li>
-		<li><a target="_blank" style="text-decoration: underline;" class="navbarright" href="ImageProcessInterface.html">ImageProcess</a></li>
+		<li><a target="_blank" class="navbarright" href="WalkingInterface.html">Walking Interface</a></li>
+		<li><a target="_blank" style="text-decoration: underline;" class="navbarright" href="ImageProcessInterface.html">Humanoid Interface</a></li>
+		<li><a target="_blank" class="navbarright" href="MotionControlInterface.html">Motion Controller</a></li>
 		<li><a target="_blank" class="navbarright" href="index.html">Home</a></li>
 		<li class="logo">
 			<a target="_blank" href="index.html" class="logo"><img id="logoimg" src="./resources/TKU_ICLab/iclablogo-02.png"></a>
@@ -975,12 +927,14 @@
 							</td>
 						</tr>
 						<tr>
-							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="HorizontalPositionValue" size="12" maxlength="4" value="2048" onkeydown="showHorizontalPosition(this.value)" /></td>
-							<td><input class="Range" id="HorizontalPositionRange" name="HorizontalPositionRange" type="range" min="1024" max="3072" value="2048" oninput="rangeHorizontalPosition(this.value)"/></td>
-							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="HorizontalSpeedValue" size="12" maxlength="3" value="1" onkeydown="showHorizontalSpeed(this.value)" /></td>
+							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="HorizontalPositionValue" size="12" value="2048" onchange="rangeHorizontalPosition(this.value)" /></td>
+							<td><input class="Range" id="HorizontalPositionRange" name="HorizontalPositionRange" type="range" min="0" max="4095"
+								 value="2048" oninput="showHorizontalPosition(this.value)"/></td>
+							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="HorizontalSpeedValue" size="12" value="1" onchange="rangeHorizontalSpeed(this.value)" /></td>
 						</tr>
 						<tr>
-							<td><input class="Range" id="HorizontalSpeedRange" name="HorizontalSpeedRange" type="range" min="1" max="100" value="1" oninput="rangeHorizontalSpeed(this.value)"/></td>
+							<td><input class="Range" id="HorizontalSpeedRange" name="HorizontalSpeedRange" type="range" min="1" max="1023"
+								 value="1" oninput="showHorizontalSpeed(this.value)"/></td>
 						</tr>
 						<tr>
 							<td colspan="3">
@@ -988,12 +942,14 @@
 							</td>
 						</tr>
 						<tr>
-							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="VerticalPositionValue" size="12" maxlength="4" value="2048" onkeydown="showVerticalPosition(this.value)" /></td>
-							<td><input class="Range" id="VerticalPositionRange" name="VerticalPositionRange" type="range" min="850" max="2400" value="2048" oninput="rangeVerticalPosition(this.value)" /></td>
-							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="VerticalSpeedValue" size="12" maxlength="3" value="1" onkeydown="showVerticalSpeed(this.value)" /></td>
+							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="VerticalPositionValue" size="12" value="2048" onchange="rangeVerticalPosition(this.value)" /></td>
+							<td><input class="Range" id="VerticalPositionRange" name="VerticalPositionRange" type="range" min="0" max="4095"
+								 value="2048" oninput="showVerticalPosition(this.value)" /></td>
+							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="VerticalSpeedValue" size="12" value="1" onchange="rangeVerticalSpeed(this.value)" /></td>
 						</tr>
 						<tr>
-							<td><input class="Range" id="VerticalSpeedRange" name="VerticalSpeedRange" type="range" min="1" max="100" value="1" oninput="rangeVerticalSpeed(this.value)" /></td>
+							<td><input class="Range" id="VerticalSpeedRange" name="VerticalSpeedRange" type="range" min="1" max="1023" value="1"
+								 oninput="showVerticalSpeed(this.value)" /></td>
 						</tr>
 					</table>
 				</div>
@@ -1012,18 +968,18 @@
 						</tr>
 						<tr>
 							<td width="25"></td>
-							<td><input class="Range" id="CamBrightness" name="CamBrightness" type="range" min="0" max="255" value="50"
+							<td><input class="Range" id="CamBrightness" name="CamBrightness" type="range" min="-60" max="60" value="-15"
 								 oninput="showCamBrightness(this.value)" /></td>
 							<td><input type="text" class="ValueText" id="CamBrightnessValue" size="12" value="50" onchange="rangeCamBrightnessValue(this.value)" /></td>
 						</tr>
 						<tr>
 							<td colspan="3">
-								<p class="text">Camera Contras:</p>
+								<p class="text">Camera Contrast:</p>
 							</td>
 						</tr>
 						<tr>
 							<td width="25"></td>
-							<td><input class="Range" id="CamContrast" name="CamContrast" type="range" min="0" max="10" value="5" oninput="showCamContrast(this.value)" /></td>
+							<td><input class="Range" id="CamContrast" name="CamContrast" type="range" min="0" max="200" value="50" oninput="showCamContrast(this.value)" /></td>
 							<td><input type="text" class="ValueText" id="CamContrastValue" size="12" value="5" onchange="rangeCamContrastValue(this.value)" /></td>
 						</tr>
 						<tr>
