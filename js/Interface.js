@@ -48,6 +48,7 @@ ros.on('close', function () {
   document.getElementById('connected').style.display = 'none';
 });
 
+// interface -> 對應到Send button, 就是把sector存檔
 var interface = new ROSLIB.Topic({
   ros: ros,
   name: '/package/InterfaceSend2Sector',
@@ -58,6 +59,7 @@ var SendPackage = new ROSLIB.Message({
   sectorname: ""
 });
 
+// 傳送sector
 var SectorPackage = new ROSLIB.Topic({
   ros: ros,
   name: '/package/Sector',
@@ -66,7 +68,7 @@ var SectorPackage = new ROSLIB.Topic({
 var SendSectorPackage = new ROSLIB.Message({
   data : 0
 });
-
+// interface -> 對應到Save button, 就是把Motion串存檔
 var InterfaceSaveMotionData = new ROSLIB.Topic({
   ros: ros,
   name: '/package/InterfaceSaveMotion',

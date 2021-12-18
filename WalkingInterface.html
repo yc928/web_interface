@@ -58,9 +58,8 @@
 	<script type="text/javascript" src="./js/roslib/roslib.min.js"></script>
 	<script type="text/javascript">
 
-		var ros = new ROSLIB.Ros({
-			url: "ws://172.17.121.10:9090"
-		});
+		var ros = new ROSLIB.Ros();
+
 		ros.on('connection', function () {
 			console.log('Connection made!');
 			connectFlag = true;
@@ -131,7 +130,6 @@
 			Y_Swing_Shift: 0.6,
 			X_Swing_COM: 0.0,
 			BASE_LIFT_Z: 0.0,
-			Stand_Balance: false,
 			B_SplineParam: {
 				Kick_Point_X: 0.0,
 				Kick_Point_Y: 0.0,
@@ -159,23 +157,17 @@
 			messageType: 'tku_msgs/SensorSet'
 		});
 		var SensorSet_msg = new ROSLIB.Message({
-			sensor_P: 0,
-			sensor_I: 0,
-			sensor_D: 0,
-			Roll: 0,
-			Pitch: 0,
-			Yaw: 0,
-			sup_f: 0,
-			nsup_f: 0,
-			sensor_modeset: 0
-			// GainRoll: 0,
-			// GainPitch: 0,
-			// GainKP: 0,
-			// GainKD: 0,
-			// DesireSet: false,
-			// IMUReset: false,
-			// ForceState: false,
-			// GainSet: false
+			roll: 0,
+			pitch: 0,
+			yaw: 0,
+			gainroll: 0,
+			gainpitch: 0,
+			gainkp: 0,
+			gainkd: 0,
+			desire_set: false,
+			imu_reset: false,
+			force_state: false,
+			gain_set: false
 		});
 
 		var LoadWalkingGaitParameterClient = new ROSLIB.Service({
@@ -652,7 +644,6 @@
 			parameter_msg.Y_Swing_Shift = Number(Y_Swing_Shift_tmp);
 			parameter_msg.X_Swing_COM = Number(X_Swing_COM_tmp);
 			parameter_msg.BASE_LIFT_Z = Number(BASE_LIFT_Z_tmp);
-			parameter_msg.Stand_Balance = document.getElementById("balance_").checked;
 			parameter_msg.B_SplineParam.Kick_Point_X = Number(Kick_Point_X_temp);
 			parameter_msg.B_SplineParam.Kick_Point_Y = Number(Kick_Point_Y_temp);
 			parameter_msg.B_SplineParam.Kick_Point_Z = Number(Kick_Point_Z_temp);
@@ -1586,7 +1577,6 @@
 
 		function SendSensorSet()
 		{
-			var sensor_modeset = 0;
 			/*var roll = Number(document.getElementById("Set_Roll").value);
 			var pitch = Number(document.getElementById("Set_Pitch").value);
 			var yaw = Number(document.getElementById("Set_Yaw").value);
@@ -1610,9 +1600,7 @@
 				SensorSet_msg.DesireSet = false;
 			}*/
 			// if (document.getElementById("IMUReset").checked) {
-				sensor_modeset += 0x02;
-				SensorSet_msg.sensor_modeset = sensor_modeset;
-				// SensorSet_msg.IMUReset = true;
+				SensorSet_msg.imu_reset = true;
 			// }
 			// else {
 			// 	SensorSet_msg.IMUReset = false;
@@ -1952,10 +1940,6 @@
 						<td><input type="text" name="BASE_LIFT_Z" id="luBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
 					</tr>
 				</table>
-				<tr>
-					<td><input style="margin-top: 10px " type="checkbox" name="balance" id="balance_" value="balance"></td>
-					<td><label for="balance_">balance</label></td>
-				</tr>
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
