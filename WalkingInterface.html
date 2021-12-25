@@ -282,10 +282,10 @@
 			messageType: 'tku_msgs/SensorPackage'
 			});
 			SensorPackage_Subscriber.subscribe(function (msg)
-			{		
-				document.getElementById("Roll").value = msg.IMUData[0];
-				document.getElementById("Pitch").value = msg.IMUData[1];
-				document.getElementById("Yaw").value = msg.IMUData[2];
+			{	
+				document.getElementById("Roll").value = msg.imudata[0];
+				document.getElementById("Pitch").value = msg.imudata[1];
+				document.getElementById("Yaw").value = msg.imudata[2];
 				/*document.getElementById("Left_1").value = msg.ForceSensorData[0];
 				document.getElementById("Left_2").value = msg.ForceSensorData[1];
 				document.getElementById("Left_3").value = msg.ForceSensorData[2];
