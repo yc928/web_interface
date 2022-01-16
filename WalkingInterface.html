@@ -56,6 +56,7 @@
 		</style>
 	<script type="text/javascript" src="./js/roslib/eventemitter2.min.js"></script>
 	<script type="text/javascript" src="./js/roslib/roslib.min.js"></script>
+	<script type="text/javascript" src="./js/roslib/roslib.js"></script>
 	<script type="text/javascript">
 
 		var ros = new ROSLIB.Ros();
@@ -116,20 +117,20 @@
 		var web_parameter_Topic = new ROSLIB.Topic({
 			ros: ros,
 			name: '/web/parameter_Topic',
-			messageType: 'tku_msgs/parameter'
+			messageType: 'tku_msgs/Parameter'
 		});
 		var parameter_msg = new ROSLIB.Message({
-			X_Swing_Range: 0,
-			Y_Swing_Range: 2.9,
-			Z_Swing_Range: 0,
-			Period_T: 1200,
-			Period_T2: 600,
-			Sample_Time: 40,
-			OSC_LockRange: 0.56,
-			BASE_Default_Z: 3.2,
-			Y_Swing_Shift: 0.6,
-			X_Swing_COM: 0.0,
-			BASE_LIFT_Z: 0.0,
+			x_swing_range: 0,
+			y_swing_range: 2.9,
+			z_swing_range: 0,
+			period_t: 1200,
+			teriod_t2: 600,
+			sample_time: 40,
+			osc_lockrange: 0.56,
+			base_default_z: 3.2,
+			y_swing_shift: 0.6,
+			x_swing_com: 0.0,
+			base_lift_z: 0.0,
 			B_SplineParam: {
 				Kick_Point_X: 0.0,
 				Kick_Point_Y: 0.0,
@@ -534,6 +535,7 @@
 			document.getElementById("LKickB").style.display = "inline";
 		}
 		function Load() {
+			console.log("load function");
 			if (document.getElementById("Continuousback").checked) {
 				Continuousback_msg.data = true;
 				console.log("checked");
@@ -543,31 +545,34 @@
 				console.log("unchecked");
 			}
 			Continuousback_Topic.publish(Continuousback_msg);
+			console.log("Continuousback_Topic");
 			console.log('statetype = ', statetype);
 			WalkingGaitParameter_request.mode = Number(statetype);
+			console.log('set mode ', statetype);
 			LoadWalkingGaitParameterClient.callService(WalkingGaitParameter_request, function (walkinggait_parameter) {
-				X_Swing_Range_tmp = walkinggait_parameter.X_Swing_Range;
-				Y_Swing_Range_tmp = walkinggait_parameter.Y_Swing_Range;
-				Z_Swing_Range_tmp = walkinggait_parameter.Z_Swing_Range;
-				Period_T_tmp = walkinggait_parameter.Period_T;
-				Period_T2_tmp = walkinggait_parameter.Period_T2;
-				Sample_Time_tmp = walkinggait_parameter.Sample_Time;
-				OSC_LockRange_tmp = walkinggait_parameter.OSC_LockRange;
+				console.log("callService");
+				X_Swing_Range_tmp = walkinggait_parameter.x_swing_range;
+				Y_Swing_Range_tmp = walkinggait_parameter.y_swing_range;
+				Z_Swing_Range_tmp = walkinggait_parameter.z_swing_range;
+				Period_T_tmp = walkinggait_parameter.period_t;
+				Period_T2_tmp = walkinggait_parameter.period_t2;
+				Sample_Time_tmp = walkinggait_parameter.sample_time;
+				OSC_LockRange_tmp = walkinggait_parameter.osc_lockrange;
 
-				T_DSP_tmp = walkinggait_parameter.OSC_LockRange;
+				T_DSP_tmp = walkinggait_parameter.osc_lockrange;
 
-				BASE_Default_Z_tmp = walkinggait_parameter.BASE_Default_Z;
-				Y_Swing_Shift_tmp = walkinggait_parameter.Y_Swing_Shift;
-				X_Swing_COM_tmp = walkinggait_parameter.X_Swing_COM;
-				BASE_LIFT_Z_tmp = walkinggait_parameter.BASE_LIFT_Z;
-				Kick_Point_X_temp = walkinggait_parameter.B_SplineParam.Kick_Point_X;
-				Kick_Point_Y_temp = walkinggait_parameter.B_SplineParam.Kick_Point_Y;
-				Kick_Point_Z_temp = walkinggait_parameter.B_SplineParam.Kick_Point_Z;
-				Back_Point_X_temp = walkinggait_parameter.B_SplineParam.Back_Point_X;
-				Back_Point_Z_temp = walkinggait_parameter.B_SplineParam.Back_Point_Z;
-				Support_Foot_Hip_Upper_Pitch_temp = walkinggait_parameter.B_SplineParam.Support_Foot_Hip_Upper_Pitch;
-				Kick_Foot_Ankle_Upper_Pitch_temp = walkinggait_parameter.B_SplineParam.Kick_Foot_Ankle_Upper_Pitch;
-				Support_Foot_Ankle_Upper_Pitch_temp = walkinggait_parameter.B_SplineParam.Support_Foot_Ankle_Upper_Pitch;
+				BASE_Default_Z_tmp = walkinggait_parameter.base_default_z;
+				Y_Swing_Shift_tmp = walkinggait_parameter.y_swing_shift;
+				X_Swing_COM_tmp = walkinggait_parameter.x_swing_com;
+				BASE_LIFT_Z_tmp = walkinggait_parameter.base_lift_z;
+				Kick_Point_X_temp = 0//walkinggait_parameter.B_SplineParam.Kick_Point_X;
+				Kick_Point_Y_temp = 0//walkinggait_parameter.B_SplineParam.Kick_Point_Y;
+				Kick_Point_Z_temp = 0//walkinggait_parameter.B_SplineParam.Kick_Point_Z;
+				Back_Point_X_temp = 0//walkinggait_parameter.B_SplineParam.Back_Point_X;
+				Back_Point_Z_temp = 0//walkinggait_parameter.B_SplineParam.Back_Point_Z;
+				Support_Foot_Hip_Upper_Pitch_temp = 0//walkinggait_parameter.B_SplineParam.Support_Foot_Hip_Upper_Pitch;
+				Kick_Foot_Ankle_Upper_Pitch_temp = 0//walkinggait_parameter.B_SplineParam.Kick_Foot_Ankle_Upper_Pitch;
+				Support_Foot_Ankle_Upper_Pitch_temp = 0//walkinggait_parameter.B_SplineParam.Support_Foot_Ankle_Upper_Pitch;
 				switch (statetype) {
 					case 0:
 						document.getElementById("Period_T").value = Period_T_tmp;
@@ -576,7 +581,7 @@
 						break;
 					case 1:
 						document.getElementById("cPeriod_T").value = Period_T_tmp;
-						document.getElementById("cT_DSP").value = T_DSP_tmp;
+						document.getElementById("T_DSP").value = T_DSP_tmp;
 						document.getElementById("cBASE_Default_Z").value = BASE_Default_Z_tmp;
 						break;
 
@@ -633,25 +638,26 @@
 		}
 		function Save() {
 			parameter_msg.mode = Number(statetype);
-			parameter_msg.X_Swing_Range = Number(X_Swing_Range_tmp);
-			parameter_msg.Y_Swing_Range = Number(Y_Swing_Range_tmp);
-			parameter_msg.Z_Swing_Range = Number(Z_Swing_Range_tmp);
-			parameter_msg.Period_T = Number(Period_T_tmp);
-			parameter_msg.Period_T2 = Number(Period_T2_tmp);
-			parameter_msg.Sample_Time = Number(Sample_Time_tmp);
-			parameter_msg.OSC_LockRange = Number(OSC_LockRange_tmp);
-			parameter_msg.BASE_Default_Z = Number(BASE_Default_Z_tmp);
-			parameter_msg.Y_Swing_Shift = Number(Y_Swing_Shift_tmp);
-			parameter_msg.X_Swing_COM = Number(X_Swing_COM_tmp);
-			parameter_msg.BASE_LIFT_Z = Number(BASE_LIFT_Z_tmp);
-			parameter_msg.B_SplineParam.Kick_Point_X = Number(Kick_Point_X_temp);
-			parameter_msg.B_SplineParam.Kick_Point_Y = Number(Kick_Point_Y_temp);
-			parameter_msg.B_SplineParam.Kick_Point_Z = Number(Kick_Point_Z_temp);
-			parameter_msg.B_SplineParam.Back_Point_X = Number(Back_Point_X_temp);
-			parameter_msg.B_SplineParam.Back_Point_Z = Number(Back_Point_Z_temp);
-			parameter_msg.B_SplineParam.Support_Foot_Hip_Upper_Pitch = Number(Support_Foot_Hip_Upper_Pitch_temp);
-			parameter_msg.B_SplineParam.Kick_Foot_Ankle_Upper_Pitch = Number(Kick_Foot_Ankle_Upper_Pitch_temp);
-			parameter_msg.B_SplineParam.Support_Foot_Ankle_Upper_Pitch = Number(Support_Foot_Ankle_Upper_Pitch_temp);
+			parameter_msg.x_swing_range = Number(X_Swing_Range_tmp);
+			parameter_msg.y_swing_range = Number(Y_Swing_Range_tmp);
+			parameter_msg.z_swing_range = Number(Z_Swing_Range_tmp);
+			parameter_msg.period_t = Number(Period_T_tmp);
+			parameter_msg.period_t2 = Number(Period_T2_tmp);
+			parameter_msg.sample_time = Number(Sample_Time_tmp);
+			parameter_msg.osc_lockrange = Number(OSC_LockRange_tmp);
+			parameter_msg.base_default_z = Number(BASE_Default_Z_tmp);
+			parameter_msg.y_swing_shift = Number(Y_Swing_Shift_tmp);
+			parameter_msg.x_swing_com = Number(X_Swing_COM_tmp);
+			parameter_msg.base_lift_z = Number(BASE_LIFT_Z_tmp);
+			//parameter_msg.B_SplineParam.Kick_Point_X = Number(Kick_Point_X_temp);
+			//parameter_msg.B_SplineParam.Kick_Point_Y = Number(Kick_Point_Y_temp);
+			//parameter_msg.B_SplineParam.Kick_Point_Z = Number(Kick_Point_Z_temp);
+			//parameter_msg.B_SplineParam.Back_Point_X = Number(Back_Point_X_temp);
+			//parameter_msg.B_SplineParam.Back_Point_Z = Number(Back_Point_Z_temp);
+			//parameter_msg.B_SplineParam.Support_Foot_Hip_Upper_Pitch = Number(Support_Foot_Hip_Upper_Pitch_temp);
+			//parameter_msg.B_SplineParam.Kick_Foot_Ankle_Upper_Pitch = Number(Kick_Foot_Ankle_Upper_Pitch_temp);
+			//parameter_msg.B_SplineParam.Support_Foot_Ankle_Upper_Pitch = Number(Support_Foot_Ankle_Upper_Pitch_temp);
+			
 			web_parameter_Topic.publish(parameter_msg);
 		}
 		function changeX_Swing_value(value) {
