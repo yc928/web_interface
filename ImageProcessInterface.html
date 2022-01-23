@@ -232,7 +232,7 @@
 		}
 		function SaveColorModelFunction() {
 			console.log("SaveColorModelFunction");
-			SaveHSVreqrest.Save = true;
+			SaveHSVreqrest.save = true;
 			document.getElementById("SaveColorModel").disabled = "disabled";
 			SaveHSVClient.callService(SaveHSVreqrest, function (SaveHSVresult) {
 				if (SaveHSVresult.already == true) {
@@ -333,6 +333,7 @@
 			console.log("change color label [check log]");
 			HSVreqrest.colorlabel = Number(newValue);
 			HSVClient.callService(HSVreqrest, function (HSVresult) {
+				console.log("HminRange");
 				document.getElementById("HminRange").value = HSVresult.hmin;
 				document.getElementById("SminRange").value = HSVresult.smin;
 				document.getElementById("BminRange").value = HSVresult.vmin;
