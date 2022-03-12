@@ -47,14 +47,30 @@ ros.on('close', function () {
 });
 
 // interface -> 對應到Send button, 就是把sector存檔
+// var interface = new ROSLIB.Topic({
+//   ros: ros,
+//   name: '/package/InterfaceSend2Sector',
+//   messageType: 'tku_msgs/InterfaceSend2Sector'
+// });
+// var SendPackage = new ROSLIB.Message({
+//   Package: 0,
+//   sectorname: ""
+// });
 var interface = new ROSLIB.Topic({
   ros: ros,
   name: '/package/InterfaceSend2Sector',
-  messageType: 'tku_msgs/InterfaceSend2Sector'
+  messageType: 'tku_msgs/MotorAction'
 });
-var SendPackage = new ROSLIB.Message({
-  Package: 0,
-  sectorname: ""
+var SectorInfoPackage = new ROSLIB.Message({
+  sectorname: "",
+  action_mode: 0,
+  action_list: [],
+  delay_list: []
+});
+
+var MotorActionPackage = new ROSLIB.Message({
+  motor_speed: [],
+  motor_angle: []
 });
 
 // 傳送sector
@@ -558,7 +574,120 @@ function ReadStand()
 
 function Send()
 {
-  doSendFlag = true;
+  var ID = Number(document.getElementById('SendID').value);
+  var Sector = Number(document.getElementById('Sector').value);
+  var count = 0;
+  SectorInfoPackage.sectorname = document.getElementById('Sector').value;
+  SectorInfoPackage.action_list.length = 0;
+  SectorInfoPackage.delay_list.length = 0;
+  MotorActionPackage.motor_speed.length = 0;
+  MotorActionPackage.motor_angle.length = 0;
+
+  if (document.getElementById('Locked29').checked && Sector == 29)
+  {
+    alert("Sector 29 is Locked. Please try again. ");
+  }
+  else if (Sector < 1)
+  {
+    alert("Sector is not find. Please try again. ");
+  }
+  else
+  {
+    for (var i = 0; i < document.getElementById('AbsolutePositionTable').getElementsByTagName('div').length; i++) 
+    {
+      var _id = document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value;
+      if (ID == _id) 
+      {
+        SectorInfoPackage.action_mode = 242;
+        for (var j = 0; j < 21; j++) 
+        {
+          var _speed = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value);
+          var _angle = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value);
+          MotorActionPackage.motor_speed[j] = _speed;
+          MotorActionPackage.motor_angle[j] = _angle;
+        }
+        SectorInfoPackage.action_list[0] = MotorActionPackage;
+        SectorInfoPackage.delay_list[0] = 0;
+		    console.log("242 publish start");
+		    console.log(SectorInfoPackage.action_list.length);
+        interface.publish(SectorInfoPackage);
+		    console.log("242 publish end");
+        break;
+      }
+    }
+
+    for (var i = 0; i < document.getElementById('RelativePositionTable').getElementsByTagName('div').length; i++) 
+    {
+      var _id = document.getElementById('RelativePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value;
+      if (ID == _id) 
+      {
+        SectorInfoPackage.action_mode = 243;
+        for (var j = 0; j < 21; j++) 
+        {
+          var _speed = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value);
+          var _angle = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value);
+          MotorActionPackage.motor_speed[j] = _speed;
+          MotorActionPackage.motor_angle[j] = _angle;
+        }
+        SectorInfoPackage.action_list[0] = MotorActionPackage;
+        SectorInfoPackage.delay_list[0] = 0;
+		    console.log("243 publish start");
+		    console.log(SectorInfoPackage.action_list.length);
+        interface.publish(SectorInfoPackage);
+		    console.log("243 publish end");
+        break;
+      }   
+    }
+
+    for (var i = 0; i < document.getElementById('MotionTable').getElementsByTagName('div').length; i++) 
+    {
+      var _id = document.getElementById('MotionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value;      
+      if (ID == _id) 
+      {
+        SectorInfoPackage.action_mode = 243;
+        for (var j = 1; j <= 20; j++) 
+        {
+          var _action_id = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j*2 - 1].value);
+          var _delay = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j * 2].value);
+          if (_action_id) 
+          {
+            for (var l = 0; l < document.getElementById('RelativePositionTable').getElementsByTagName('div').length; l++) 
+            {
+              var _relative_action_id = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l].getElementsByClassName('textbox')[0].value);
+              if (_action_id == _relative_action_id) 
+              {
+                var _MotorActionPackage = new ROSLIB.Message({
+                  motor_speed: [],
+                  motor_angle: []
+                });
+                for (var k = 0; k < 21; k++) 
+                {
+                  var _speed = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value);
+                  var _angle = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value);
+                  _MotorActionPackage.motor_speed[k] = _speed;
+                  _MotorActionPackage.motor_angle[k] = _angle;
+                }
+                break;
+              }
+            }
+          }
+        }
+        if(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[1].value != 0)
+        {
+          console.log("244 publish start");
+          console.log(SectorInfoPackage.action_list.length);
+          interface.publish(SectorInfoPackage);
+          console.log("244 publish end");
+          break;
+        }
+        else
+        {
+          document.getElementById('label').innerHTML = "A1 or MotionList should not be empty";
+        }
+      }
+    }
+  }
+  /*doSendFlag = true;
   document.getElementById('label').innerHTML = "";
   document.getElementById('SaveButton').disabled = true;
   document.getElementById('ReadButton').disabled = true;
@@ -725,6 +854,11 @@ function Send()
 
     for (var i = 0; i < document.getElementById('MotionTable').getElementsByTagName('div').length; i++) 
     {
+      var _id = document.getElementById('MotionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value;
+      var _name = document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[0].value;
+      console.log(_id);
+      console.log(_name);
+      
       if (ID == document.getElementById('MotionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value) 
       {
         MotionList[count++] = 244;
@@ -786,7 +920,7 @@ function Send()
       }
     }
   }
-  MotionList.length = 0;
+  MotionList.length = 0;*/
 }
 
 function Locked()
@@ -803,7 +937,7 @@ function Locked()
 
 function execute()
 {
-  doExecuteFlag = true;
+  console.log("execute");
   document.getElementById('label').innerHTML = "";
   document.getElementById('SaveButton').disabled = true;
   document.getElementById('ReadButton').disabled = true;
@@ -820,7 +954,40 @@ function execute()
   document.getElementById('CopyButton').disabled = true;
   document.getElementById('CheckSumButton').disabled = true;
 
-  CheckSector(Number(document.getElementById('Sector').value));
+  var ExecuteSectorClient = new ROSLIB.Service({
+    ros : ros,
+    name : '/package/ExecuteSector',
+    serviceType: 'tku_msgs/ExecuteSector'
+  });
+  console.log("execute 1");
+  var sector_request = new ROSLIB.ServiceRequest({
+    sector : Number(document.getElementById('Sector').value)
+  });
+  console.log("execute 2");
+  ExecuteSectorClient.callService(sector_request , function(srv)
+  {
+    console.log("execute sector", sector_request.sector);
+    if(srv.done == true)
+    {
+      document.getElementById('label').innerHTML = "Send sector is successful !!";
+      document.getElementById('SaveButton').disabled = false;
+      document.getElementById('ReadButton').disabled = false;
+      document.getElementById('SaveStandButton').disabled = false;
+      document.getElementById('ReadStandButton').disabled = false;
+      document.getElementById('SendButton').disabled = false;
+      document.getElementById('executeButton').disabled = false;
+      document.getElementById('standButton').disabled = false;
+      document.getElementById('MultipleButton').disabled = false;
+      document.getElementById('MergeButton').disabled = false;
+      document.getElementById('AddButton').disabled = false;
+      document.getElementById('DeleteButton').disabled = false;
+      document.getElementById('ReverseButton').disabled = false;
+      document.getElementById('CopyButton').disabled = false;
+      document.getElementById('CheckSumButton').disabled = false;
+
+    }
+
+  });
 }
 
 function stand()
