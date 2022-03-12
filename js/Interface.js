@@ -649,6 +649,7 @@ function Send()
         {
           var _action_id = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j*2 - 1].value);
           var _delay = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j * 2].value);
+          console.log("_delay", _delay);
           if (_action_id) 
           {
             for (var l = 0; l < document.getElementById('RelativePositionTable').getElementsByTagName('div').length; l++) 
@@ -667,6 +668,9 @@ function Send()
                   _MotorActionPackage.motor_speed[k] = _speed;
                   _MotorActionPackage.motor_angle[k] = _angle;
                 }
+                console.log("j-1", j-1);
+                SectorInfoPackage.action_list[j-1] = _MotorActionPackage;
+                SectorInfoPackage.delay_list[j-1] = _delay;
                 break;
               }
             }
@@ -675,7 +679,7 @@ function Send()
         if(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[1].value != 0)
         {
           console.log("244 publish start");
-          console.log(SectorInfoPackage.action_list.length);
+          console.log(SectorInfoPackage);
           interface.publish(SectorInfoPackage);
           console.log("244 publish end");
           break;
